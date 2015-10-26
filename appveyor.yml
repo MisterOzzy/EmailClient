@@ -1,0 +1,24 @@
+version: 0.0.0.{build}
+pull_requests:
+  do_not_increment_build_number: true
+configuration: Release
+before_build:
+- ps: Installer\UpdateVersionScript.ps1
+build:
+  verbosity: minimal
+after_build:
+- cmd: >-
+    cd EmailClient\packages\Tools.InnoSetup.5.5.6\tools
+
+    iscc "..\..\..\..\Installer\setup_CI.iss"
+artifacts:
+- path: Installer\EmailClientInstaller
+deploy:
+- provider: GitHub
+  release: EmailClient (0.0.2)
+  auth_token:
+    secure: SCFaAIOXTHAhSwGvw1uNTRnIkhhf2D3Nw3Qk/9Dl04qYCkgUIcJgNpPhkHfC/zUU
+  on:
+    appveyor_repo_tag: true
+    configuration: Release
+    branch: master
