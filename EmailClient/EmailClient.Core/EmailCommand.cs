@@ -7,12 +7,10 @@ namespace EmailClient.Core
     {
         protected const string CRLF = "\r\n";
         protected bool _isMultiLineResponse = false;
-
-        public string Command { get; set; }
         private string _response = string.Empty;
         private object _lockResponseObject = new object();
 
-        
+        public string Command { get; set; }
 
         public Stream EmailStream { get; set; }
 
