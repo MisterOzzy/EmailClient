@@ -5,9 +5,13 @@ configuration: Release
 before_build:
 - ps: >-
     nuget restore EmailClient\EmailClient.sln
+
     Installer\UpdateVersionScript.ps1
+
     cd EmailClient
+
     Install-Package Tools.InnoSetup
+
     cd ..\
 build:
   verbosity: minimal
