@@ -8,11 +8,11 @@ before_build:
 
     Installer\UpdateVersionScript.ps1
 
-    cd EmailClient
+    cd EmailClient\packages
 
     nuget install Tools.InnoSetup -Version 5.5.6
 
-    cd ..\
+    cd ..\..\
 build:
   verbosity: minimal
 after_build:
