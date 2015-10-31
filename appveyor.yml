@@ -4,7 +4,7 @@ pull_requests:
 configuration: Release
 before_build:
 - ps: >-
-    nuget restore EmailClient.sln
+    nuget restore EmailClient\EmailClient.sln
 
     Installer\UpdateVersionScript.ps1
 build:
