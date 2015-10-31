@@ -10,7 +10,7 @@ before_build:
 
     cd EmailClient
 
-    nuget install Tools.InnoSetup -Version=5.5.6
+    nuget install Tools.InnoSetup -Version 5.5.6
 
     cd ..\
 build:
