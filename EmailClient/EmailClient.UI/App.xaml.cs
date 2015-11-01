@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace EmailClient.Core.Core.Core.UI
+namespace EmailClient.UI
 {
     /// <summary>
     /// Interaction logic for App.xaml

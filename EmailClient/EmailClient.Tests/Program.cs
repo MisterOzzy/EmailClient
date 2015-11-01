@@ -29,6 +29,9 @@ namespace EmailClient.Tests
                 var response = webClient.DownloadString(url);
                 config = JsonConvert.DeserializeObject<EmailProvider>(response);
             }
+            //Get password
+            StreamReader reader = new StreamReader("Test.txt");
+            string pass = reader.ReadLine();
 
             EmailConnection connection = EmailConnection.Connection;
             connection.Host = config.Imap.Host;
@@ -36,6 +39,7 @@ namespace EmailClient.Tests
             connection.Port = config.Pop3.Port;
             connection.TypeProtocol = EmailTypeProtocol.POP3;
             connection.Username = "ozzy2106@gmail.com";
+            connection.Password = pass;
             connection.Open();
             connection.Authenticate();
             Console.ReadLine();
