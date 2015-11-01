@@ -10,7 +10,32 @@ namespace EmailClient.Util.Logger
     {       
         public void Log(string message, LogType type = LogType.Info, Exception ex = null)
         {
+#if DEBUG
+            switch (type)
+            {
+                case LogType.Info:
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    break;
+                case LogType.Warning:
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    break;
+                case LogType.Error:
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    break;
+                case LogType.Critical:
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    break;
+                case LogType.Debug:
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    break;
+                default:
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    break;
+            }
+
             Console.WriteLine("[{0}] {1}: {2}\n{3}", DateTime.UtcNow, type, message, ex);
+            Console.ForegroundColor = ConsoleColor.Gray;
+#endif
         }
     }
 }
