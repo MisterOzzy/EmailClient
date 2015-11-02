@@ -1,23 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EmailClient.Core
+namespace EmailClient.Core.ImapProvider
 {
     public class ImapCommand : EmailCommand
     {
-        private static int IMAP_COMMAND_COUNTER = 0;
+        private Guid IMAP_CURRENT_GUID;
 
-        private static string IMAP_PREFIX
+        private string IMAP_PREFIX
         {
-            get { return "IMAP00" + IMAP_COMMAND_COUNTER.ToString() + " "; }
+            get { return "IMAP" + IMAP_CURRENT_GUID.ToString().Substring(23) + " "; }
         }
 
         protected override string InitializeCommand()
         {
-            IMAP_COMMAND_COUNTER++;
+            IMAP_CURRENT_GUID = Guid.NewGuid();
             return IMAP_PREFIX + Command + CRLF;
         }
 

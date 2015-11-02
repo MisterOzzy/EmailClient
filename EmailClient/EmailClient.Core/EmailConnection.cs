@@ -6,47 +6,35 @@ using System.Security.Authentication;
 
 namespace EmailClient.Core
 {
-    internal delegate void TraceHandler(string str);
-
-    public class EmailConnection : IDisposable
+    public abstract class EmailConnection : IDisposable
     {
-        private static readonly TraceHandler _traceHandler = Console.WriteLine;
-        private static EmailConnection _currentConnection = null;
         private StreamReader _emailsStreamReader;
         private Stream _emailStream;
         private TcpClient _tcpClient;
+        private EmailConnectionStateType _state = EmailConnectionStateType.None;
 
-        protected EmailConnection()
+        public StreamReader EmailStreamReader
         {
+            get { return _emailsStreamReader; }
         }
 
-        public static EmailConnection Connection
+        public Stream EmailStream
         {
-            get
-            {
-                if (_currentConnection == null)
-                    _currentConnection = new EmailConnection();
-                return _currentConnection;
-            }
+            get { return _emailStream; }
         }
-
 
         public string Host { get; set; }
 
         public int Port { get; set; }
 
-        public string Username { get; set; }
-
-        public string Password { get; set; }
-
         public bool IsSslAuthentication { get; set; }
 
         public EmailTypeProtocol TypeProtocol { get; set; }
 
-        public static void PrintToTrace(string message)
-        {
-            _traceHandler(message);
-        }
+        //public static void PrintToTrace(string message)
+        //{
+        //    _traceHandler(message);
+        //}
 
 
         public void Open()
@@ -57,7 +45,7 @@ namespace EmailClient.Core
             }
             catch (Exception ex)
             {
-                _traceHandler(string.Format("Exception: {0}", ex.Message));
+                //_traceHandler(string.Format("Exception: {0}", ex.Message));
             }
 
             if (IsSslAuthentication)
@@ -70,7 +58,7 @@ namespace EmailClient.Core
                 }
                 catch (AuthenticationException ex)
                 {
-                    _traceHandler(string.Format("Exception: {0}", ex.Message));
+                    //_traceHandler(string.Format("Exception: {0}", ex.Message));
                     if (ex.InnerException != null)
                     {
                         Console.WriteLine("Inner exception: {0}", ex.InnerException.Message);
@@ -88,75 +76,78 @@ namespace EmailClient.Core
                 _emailsStreamReader = new StreamReader(_tcpClient.GetStream());
             }
 
+            _state = EmailConnectionStateType.Opened;
 
-            var sResult = _emailsStreamReader.ReadLine();
-            _traceHandler(sResult);
+           var sResult = _emailsStreamReader.ReadLine();
+            ////_traceHandler(sResult);
+            Console.WriteLine(sResult);
         }
 
 
-        public void Authenticate()
-        {
-            IEmailAuthentication authentication = null;
-            if(TypeProtocol == EmailTypeProtocol.None)
-                throw new Exception("Please select type of email protocol");
+        ////public void Authenticate()
+        ////{
+        ////    IEmailAuthentication authentication = null;
+        ////    if(TypeProtocol == EmailTypeProtocol.None)
+        ////        throw new Exception("Please select type of email protocol");
 
-            switch (TypeProtocol)
-            {
-                case EmailTypeProtocol.IMAP:
-                    authentication = new ImapAuthentication();
-                    break;
-                case EmailTypeProtocol.POP3:
-                    authentication = new Pop3Authentication();
-                    break;
-            }
+        ////    switch (TypeProtocol)
+        ////    {
+        ////        case EmailTypeProtocol.IMAP:
+        ////            authentication = new ImapAuthentication();
+        ////            break;
+        ////        case EmailTypeProtocol.POP3:
+        ////            authentication = new Pop3Authentication();
+        ////            break;
+        ////    }
 
-            authentication.Authenticate(Username, Password);
-        }
+        ////    authentication.Authenticate(Username, Password);
+        ////}
 
-        public EmailCommand CreateCommand()
-        {
-            if (TypeProtocol == EmailTypeProtocol.None)
-                throw new Exception("Please select type of email protocol");
+        public abstract EmailCommand CreateCommand();
+        ////{
+        ////    if (TypeProtocol == EmailTypeProtocol.None)
+        ////        throw new Exception("Please select type of email protocol");
 
-            switch (TypeProtocol)
-            {
-                case EmailTypeProtocol.IMAP:
-                    return new ImapCommand() { EmailStream = _emailStream, EmailStreamReader = _emailsStreamReader };
-                    break;
-                case EmailTypeProtocol.POP3:
-                    return new Pop3Command() { EmailStream = _emailStream, EmailStreamReader = _emailsStreamReader };
-                    break;
-            }
+        ////    switch (TypeProtocol)
+        ////    {
+        ////        case EmailTypeProtocol.IMAP:
+        ////            return new ImapCommand() { EmailStream = _emailStream, EmailStreamReader = _emailsStreamReader };
+        ////            break;
+        ////        case EmailTypeProtocol.POP3:
+        ////            return new Pop3Command() { EmailStream = _emailStream, EmailStreamReader = _emailsStreamReader };
+        ////            break;
+        ////    }
 
-            return null;
-        }
+        ////    return null;
+        ////}
 
-        public void Logout()
-        {
-            string logOut = string.Empty;
+        ////public void Logout()
+        ////{
+        ////    string logOut = string.Empty;
 
-            if (TypeProtocol == EmailTypeProtocol.None)
-                throw new Exception("Please select type of email protocol");
+        ////    if (TypeProtocol == EmailTypeProtocol.None)
+        ////        throw new Exception("Please select type of email protocol");
 
-            switch (TypeProtocol)
-            {
-                case EmailTypeProtocol.IMAP:
-                    logOut = "LOGOUT";
-                    break;
-                case EmailTypeProtocol.POP3:
-                    logOut = "QUIT";
-                    break;
-            }
+        ////    switch (TypeProtocol)
+        ////    {
+        ////        case EmailTypeProtocol.IMAP:
+        ////            logOut = "LOGOUT";
+        ////            break;
+        ////        case EmailTypeProtocol.POP3:
+        ////            logOut = "QUIT";
+        ////            break;
+        ////    }
 
-            EmailCommand command = CreateCommand();
-            command.Command = logOut;
-            command.ExecuteCommand();
-            _traceHandler(command.GetResponse());
-        }
+        ////    EmailCommand command = CreateCommand();
+        ////    command.Command = logOut;
+        ////    command.ExecuteCommand();
+        ////    _state = EmailConnectionStateType.Closed;
+        ////    ////_traceHandler(command.GetResponse());
+        ////}
 
         public void Close()
         {
-            Logout();
+            ////Logout();
             _emailStream.Close();
             _emailsStreamReader.Close();
             _tcpClient.Close();

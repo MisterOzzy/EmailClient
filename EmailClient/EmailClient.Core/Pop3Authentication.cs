@@ -10,14 +10,15 @@ namespace EmailClient.Core
     {
         public void Authenticate(string username, string password)
         {
-            var connection = EmailConnection.Connection;
-            var command = connection.CreateCommand();
-            command.Command = string.Format("USER {0}", username);
-            command.ExecuteCommand();
-            EmailConnection.PrintToTrace(command.GetResponse());
-            command.Command = string.Format("PASS {0}", password);
-            command.ExecuteCommand();
-            EmailConnection.PrintToTrace(command.GetResponse());
+           // var connection = EmailConnection.Connection;
+           // var command = connection.CreateCommand();
+           // command.Command = string.Format("USER {0}", username);
+           // command.ExecuteCommand();
+           ////// EmailConnection.PrintToTrace(command.GetResponse());
+           // command.Command = string.Format("PASS {0}", password);
+           // command.ExecuteCommand();
+           ////// EmailConnection.PrintToTrace(command.GetResponse());
+           // Console.WriteLine(command.GetResponse());
         }
     }
 }

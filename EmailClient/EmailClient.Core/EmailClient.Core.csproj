@@ -47,18 +47,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EmailClient.cs" />
+    <Compile Include="EmailConnectionStateType.cs" />
+    <Compile Include="EmailProviderFactory.cs" />
+    <Compile Include="EmailUserInfo.cs" />
     <Compile Include="IEmailAuthentication.cs" />
     <Compile Include="EmailCommand.cs" />
     <Compile Include="EmailConnection.cs" />
     <Compile Include="EmailTypeProtocol.cs" />
     <Compile Include="ImapAuthentication.cs" />
-    <Compile Include="ImapCommand.cs" />
+    <Compile Include="ImapProvider\ImapCommand.cs" />
+    <Compile Include="ImapProvider\Imap.cs" />
+    <Compile Include="ImapProvider\ImapClient.cs" />
+    <Compile Include="ImapProvider\ImapConnection.cs" />
+    <Compile Include="ImapProvider\ImapProviderFactory.cs" />
     <Compile Include="Pop3Authentication.cs" />
     <Compile Include="Pop3Command.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Pop3Provider\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

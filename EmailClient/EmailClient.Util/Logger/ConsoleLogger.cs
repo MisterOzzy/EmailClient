@@ -28,6 +28,9 @@ namespace EmailClient.Util.Logger
                 case LogType.Debug:
                     Console.ForegroundColor = ConsoleColor.Cyan;
                     break;
+                case LogType.Success:
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    break;  
                 default:
                     Console.ForegroundColor = ConsoleColor.Gray;
                     break;

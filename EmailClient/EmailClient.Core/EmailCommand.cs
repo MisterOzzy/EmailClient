@@ -32,7 +32,7 @@ namespace EmailClient.Core
 
         protected virtual void SendCommand(string command)
         {
-            EmailConnection.PrintToTrace("Client: " + command.TrimEnd(CRLF.ToCharArray()));
+           // EmailConnection.PrintToTrace("Client: " + command.TrimEnd(CRLF.ToCharArray()));
             byte[] bytesCommand = Encoding.ASCII.GetBytes(command.ToCharArray());
             EmailStream.Write(bytesCommand, 0, bytesCommand.Length);
             EmailStream.Flush();
