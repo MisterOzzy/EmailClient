@@ -2,7 +2,7 @@
 using System.Windows;
 
 
-namespace EmailClient.UI
+namespace EmailClient.UI.View
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

@@ -60,6 +60,10 @@
       <Project>{71221C0F-F0D6-483B-81C5-63A39E4AFCD1}</Project>
       <Name>EmailClient.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EmailClient.Util\EmailClient.Util.csproj">
+      <Project>{E4D6C4FB-5F93-4057-A43F-BC262C0BEF4A}</Project>
+      <Name>EmailClient.Util</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

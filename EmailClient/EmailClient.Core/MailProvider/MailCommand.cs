@@ -1,14 +1,15 @@
 ﻿using System.IO;
 using System.Text;
+using EmailClient.Util.Logger;
 
-namespace EmailClient.Core
+namespace EmailClient.Core.MailProvider
 {
-    public abstract class EmailCommand
+    public abstract class MailCommand
     {
         protected const string CRLF = "\r\n";
-        protected bool _isMultiLineResponse = false;
-        private string _response = string.Empty;
-        private object _lockResponseObject = new object();
+        private readonly object _lockResponseObject = new object();
+        protected bool IsMultiLineResponse = false;
+        private string _response = string.Empty;       
 
         public string Command { get; set; }
 
@@ -16,9 +17,25 @@ namespace EmailClient.Core
 
         public StreamReader EmailStreamReader { get; set; }
 
+        public string Response
+        {
+            get
+            {
+                return _response;
+            }
+
+            set
+            {
+                lock (_lockResponseObject)
+                {
+                    _response = value;
+                }
+            }
+        }
+
         public void ExecuteCommand(bool isMultiLineResponse = false)
         {
-            _isMultiLineResponse = isMultiLineResponse;
+            IsMultiLineResponse = isMultiLineResponse;
 
             lock (_lockResponseObject)
                 _response = string.Empty;
@@ -32,23 +49,12 @@ namespace EmailClient.Core
 
         protected virtual void SendCommand(string command)
         {
-           // EmailConnection.PrintToTrace("Client: " + command.TrimEnd(CRLF.ToCharArray()));
+            LoggerHolders.ConsoleLogger.Log("Client: " + command.TrimEnd(CRLF.ToCharArray()));
             byte[] bytesCommand = Encoding.ASCII.GetBytes(command.ToCharArray());
             EmailStream.Write(bytesCommand, 0, bytesCommand.Length);
             EmailStream.Flush();
         }
 
-        protected void SetResponse(string response)
-        {
-            lock (_lockResponseObject)
-                _response = response;
-        }
-
         protected abstract void ReceiveResponse();
-
-        public string GetResponse()
-        {
-            return _response;
-        }
     }
 }

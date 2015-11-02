@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Security;
-using System.Text;
-using System.Threading.Tasks;
-using EmailClient.Core;
 using EmailClient.Core.ImapProvider;
+using EmailClient.Core.MailProvider;
+using EmailClient.Core.Pop3Provider;
 using EmailClient.Data;
 using Newtonsoft.Json;
 
@@ -60,14 +58,14 @@ namespace EmailClient.Tests
             //connection.Open();
             //connection.Authenticate();
 
-            EmailProviderFactory emailFactory = new ImapProviderFactory();
-            EmailConnection connection = emailFactory.CreateConnection();
+            MailProviderFactory emailFactory = new ImapProviderFactory();
+            MailConnection connection = emailFactory.CreateConnection();
             connection.Host = config.Imap.Host;
             connection.IsSslAuthentication = config.Imap.IsSslAuthentication;
             connection.Port = config.Imap.Port;
             connection.Open();
-            EmailClient.Core.EmailClient client = emailFactory.CreateClient();
-            client.Authenticate(new EmailUserInfo(){Email = "ozzy2106@gmail.com", Password = securePass});
+            MailClient client = emailFactory.CreateClient();
+            client.Authenticate(new MailUserInfo(){Email = "ozzy2106@gmail.com", Password = securePass});
 
             Console.ReadLine();
         }

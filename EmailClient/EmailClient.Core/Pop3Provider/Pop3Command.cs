@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using EmailClient.Core.MailProvider;
 
-namespace EmailClient.Core
+namespace EmailClient.Core.Pop3Provider
 {
-    public class Pop3Command : EmailCommand
+    public class Pop3Command : MailCommand
     {
         protected override string InitializeCommand()
         {
@@ -16,11 +12,11 @@ namespace EmailClient.Core
         protected override void ReceiveResponse()
         {
             string response = string.Empty;
-            if (!_isMultiLineResponse)
+            if (!IsMultiLineResponse)
                 response = EmailStreamReader.ReadLine();
             else
                 response = ReceiveMultiLineResponse();
-            SetResponse(response);
+            Response = response;
         }
 
         private string ReceiveMultiLineResponse()

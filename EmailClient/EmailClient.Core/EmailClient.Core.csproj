@@ -47,29 +47,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EmailClient.cs" />
-    <Compile Include="EmailConnectionStateType.cs" />
-    <Compile Include="EmailProviderFactory.cs" />
-    <Compile Include="EmailUserInfo.cs" />
-    <Compile Include="IEmailAuthentication.cs" />
-    <Compile Include="EmailCommand.cs" />
-    <Compile Include="EmailConnection.cs" />
-    <Compile Include="EmailTypeProtocol.cs" />
-    <Compile Include="ImapAuthentication.cs" />
+    <Compile Include="MailProvider\MailClient.cs" />
+    <Compile Include="MailProvider\MailConnectionStateType.cs" />
+    <Compile Include="MailProvider\MailProviderFactory.cs" />
+    <Compile Include="MailProvider\MailUserInfo.cs" />
+    <Compile Include="MailProvider\MailCommand.cs" />
+    <Compile Include="MailProvider\MailConnection.cs" />
+    <Compile Include="MailProvider\MailTypeProtocol.cs" />
     <Compile Include="ImapProvider\ImapCommand.cs" />
     <Compile Include="ImapProvider\Imap.cs" />
     <Compile Include="ImapProvider\ImapClient.cs" />
     <Compile Include="ImapProvider\ImapConnection.cs" />
     <Compile Include="ImapProvider\ImapProviderFactory.cs" />
-    <Compile Include="Pop3Authentication.cs" />
-    <Compile Include="Pop3Command.cs" />
+    <Compile Include="Pop3Provider\Pop3.cs" />
+    <Compile Include="Pop3Provider\Pop3Client.cs" />
+    <Compile Include="Pop3Provider\Pop3Command.cs" />
+    <Compile Include="Pop3Provider\Pop3Connection.cs" />
+    <Compile Include="Pop3Provider\Pop3ProviderFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Pop3Provider\" />
+    <ProjectReference Include="..\EmailClient.Util\EmailClient.Util.csproj">
+      <Project>{E4D6C4FB-5F93-4057-A43F-BC262C0BEF4A}</Project>
+      <Name>EmailClient.Util</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

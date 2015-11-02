@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using EmailClient.Core.MailProvider;
 
 namespace EmailClient.Core.ImapProvider
 {
-    public sealed class ImapProviderFactory : EmailProviderFactory
+    public sealed class ImapProviderFactory : MailProviderFactory
     {
-        public override EmailConnection CreateConnection()
+        public override MailConnection CreateConnection()
         {
             Connection = new ImapConnection();
             return Connection;
         }
 
-        public override EmailClient CreateClient()
+        public override MailClient CreateClient()
         {
-            return new ImapClient((ImapConnection)this.Connection);
+            return new ImapClient((ImapConnection)Connection);
         }
     }
 }

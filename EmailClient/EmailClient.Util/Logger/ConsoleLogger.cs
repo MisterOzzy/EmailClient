@@ -36,7 +36,7 @@ namespace EmailClient.Util.Logger
                     break;
             }
 
-            Console.WriteLine("[{0}] {1}: {2}\n{3}", DateTime.UtcNow, type, message, ex);
+            Console.WriteLine("[{0}] {1}: {2}{3}", DateTime.UtcNow, type, message, ex == null ? null : Environment.NewLine + ex);
             Console.ForegroundColor = ConsoleColor.Gray;
 #endif
         }

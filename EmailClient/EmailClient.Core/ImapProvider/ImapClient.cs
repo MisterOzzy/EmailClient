@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using EmailClient.Core.MailProvider;
+using EmailClient.Util.Logger;
 
 namespace EmailClient.Core.ImapProvider
 {
-    public sealed class ImapClient : EmailClient
+    public sealed class ImapClient : MailClient
     {
         public ImapClient()
         {
@@ -14,25 +12,29 @@ namespace EmailClient.Core.ImapProvider
 
         public ImapClient(ImapConnection connection)
         {
-            Connection = connection;
+            base.Connection = connection;
         }
 
-        public ImapConnection Connection { get; set; }
+        public new ImapConnection Connection
+        {
+            get { return (ImapConnection)base.Connection; }
+            set { base.Connection = value; }
+        }
 
-        public override void Authenticate(EmailUserInfo userInfo)
+        public override void Authenticate(MailUserInfo userInfo)
         {
             var command = Connection.CreateCommand();
             command.Command = string.Format(Imap.IMAP_LOGIN + " {0} {1}", userInfo.Email, GetPassword(userInfo.Password));
             command.ExecuteCommand();
-            ////EmailConnection.PrintToTrace(command.GetResponse());
-            Console.WriteLine(command.GetResponse());
+            LoggerHolders.ConsoleLogger.Log(command.Response, LogType.Success); 
         }
 
         public override void LogOut()
         {
-            EmailCommand command = Connection.CreateCommand();
+            MailCommand command = Connection.CreateCommand();
             command.Command = Imap.IMAP_LOGOUT;
             command.ExecuteCommand();
+            LoggerHolders.ConsoleLogger.Log(command.Response, LogType.Debug); 
         }
     }
 }

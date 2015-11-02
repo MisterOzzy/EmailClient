@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using EmailClient.Core.MailProvider;
 
 namespace EmailClient.Core.ImapProvider
 {
-    public sealed class ImapConnection : EmailConnection
+    public sealed class ImapConnection : MailConnection
     {
-        public override EmailCommand CreateCommand()
+        public override MailCommand CreateCommand()
         {
             return new ImapCommand() { EmailStream = this.EmailStream, EmailStreamReader = this.EmailStreamReader };
         }

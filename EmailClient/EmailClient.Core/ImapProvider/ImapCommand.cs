@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
+using EmailClient.Core.MailProvider;
 
 namespace EmailClient.Core.ImapProvider
 {
-    public class ImapCommand : EmailCommand
+    public class ImapCommand : MailCommand
     {
         private Guid IMAP_CURRENT_GUID;
 
@@ -37,7 +33,7 @@ namespace EmailClient.Core.ImapProvider
                     isEnd = true;
             }
 
-            SetResponse(response);
+            Response = response;
         }
     }
 }

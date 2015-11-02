@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace EmailClient.Core
+namespace EmailClient.Core.MailProvider
 {
-    public abstract class EmailClient
+    public abstract class MailClient
     {
-        public abstract void Authenticate(EmailUserInfo userInfo);
+        protected MailConnection Connection { get; set; }
+
+        public abstract void Authenticate(MailUserInfo userInfo);
 
         public abstract void LogOut();
 
