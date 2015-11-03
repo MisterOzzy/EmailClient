@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Text;
+using EmailClient.Tests;
 using EmailClient.Util.Logger;
 
 namespace EmailClient.Core.MailProvider

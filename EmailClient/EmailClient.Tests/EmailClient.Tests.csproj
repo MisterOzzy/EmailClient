@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LoggerHolders.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -52,14 +53,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EmailClient.Core\EmailClient.Core.csproj">
-      <Project>{2BA3E350-42DB-420C-8210-DAAB695E4BE4}</Project>
-      <Name>EmailClient.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EmailClient.Data\EmailClient.Data.csproj">
-      <Project>{71221C0F-F0D6-483B-81C5-63A39E4AFCD1}</Project>
-      <Name>EmailClient.Data</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EmailClient.Util\EmailClient.Util.csproj">
       <Project>{E4D6C4FB-5F93-4057-A43F-BC262C0BEF4A}</Project>
       <Name>EmailClient.Util</Name>

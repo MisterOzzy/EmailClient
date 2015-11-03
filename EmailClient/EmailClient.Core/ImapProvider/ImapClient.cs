@@ -1,5 +1,5 @@
-﻿using System;
-using EmailClient.Core.MailProvider;
+﻿using EmailClient.Core.MailProvider;
+using EmailClient.Tests;
 using EmailClient.Util.Logger;
 
 namespace EmailClient.Core.ImapProvider

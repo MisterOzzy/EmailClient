@@ -14,8 +14,7 @@ namespace EmailClient.UI.VM.Core
             return GetOrCreateCommand(commandNameExpression, executeCommandAction, () => true);
         }
 
-        public ICommand GetOrCreateCommand<T>(Expression<Func<T>> commandNameExpression,
-            Action<object> executeCommandAction)
+        public ICommand GetOrCreateCommand<T>(Expression<Func<T>> commandNameExpression, Action<object> executeCommandAction)
         {
             var propertyName = SymbolHelpers.GetPropertyName(commandNameExpression);
             if (!_commands.ContainsKey(propertyName))
@@ -26,14 +25,13 @@ namespace EmailClient.UI.VM.Core
             return _commands[propertyName];
         }
 
-        public ICommand GetOrCreateCommand<T>(Expression<Func<T>> commandNameExpression, Action executeCommandAction,
+        public ICommand GetOrCreateCommand<T>(Expression<Func<T>> commandNameExpression, Action executeCommandAction, 
             Func<bool> canExecutePredicate)
         {
-            return GetOrCreateCommand(commandNameExpression, parameter => executeCommandAction(),
-                parameter => canExecutePredicate());
+            return GetOrCreateCommand(commandNameExpression, parameter => executeCommandAction(), parameter => canExecutePredicate());
         }
 
-        public ICommand GetOrCreateCommand<T>(Expression<Func<T>> commandNameExpression,
+        public ICommand GetOrCreateCommand<T>(Expression<Func<T>> commandNameExpression, 
             Action<object> executeCommandAction, Func<object, bool> canExecutePredicate)
         {
             var propertyName = SymbolHelpers.GetPropertyName(commandNameExpression);

@@ -4,40 +4,38 @@ using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Security;
-using EmailClient.Core.ImapProvider;
-using EmailClient.Core.MailProvider;
-using EmailClient.Core.Pop3Provider;
-using EmailClient.Data;
 using Newtonsoft.Json;
 
 namespace EmailClient.Tests
 {
+
     class Program
     {
+        
         static void Main(string[] args)
         {
-            string result = "";
-            string url = @"http://localhost:3627/EmailConfigurationService.svc/EmailProvider";
-            EmailProvider config = null; 
+            //string result = "";
+            //string url = @"http://localhost:3627/EmailConfigurationService.svc/EmailProvider";
+            //EmailProvider config = null; 
 
-            // Создаём объект WebClient
-            using (var webClient = new WebClient())
-            {
-                webClient.QueryString.Add("provider","gmail.com");
-                Console.WriteLine(webClient.QueryString);
+            //// Создаём объект WebClient
+            //using (var webClient = new WebClient())
+            //{
+            //    webClient.QueryString.Add("provider","gmail.com");
+            //    Console.WriteLine(webClient.QueryString);
                 
-                // Выполняем запрос по адресу и получаем ответ в виде строки
-                var response = webClient.DownloadString(url);
-                config = JsonConvert.DeserializeObject<EmailProvider>(response);
-            }
-            //Get password
-            StreamReader reader = new StreamReader("Test.txt");
-            //reader.ReadLine();
-            //char[] passChars = pass.ToCharArray();
+            //    // Выполняем запрос по адресу и получаем ответ в виде строки
+            //    var response = webClient.DownloadString(url);
+            //    config = JsonConvert.DeserializeObject<EmailProvider>(response);
+            //}
+            ////Get password
+            //StreamReader reader = new StreamReader("Test.txt");
+            ////reader.ReadLine();
+            ////char[] passChars = pass.ToCharArray();
 
-            SecureString securePass = new SecureString();
-            reader.ReadLine().ToCharArray().ToList().ForEach(securePass.AppendChar);
-            IntPtr cvttmpst = Marshal.SecureStringToBSTR(securePass);
+            //SecureString securePass = new SecureString();
+            //reader.ReadLine().ToCharArray().ToList().ForEach(securePass.AppendChar);
+            //IntPtr cvttmpst = Marshal.SecureStringToBSTR(securePass);
             //convert to string using Marshal
             
 
@@ -58,14 +56,14 @@ namespace EmailClient.Tests
             //connection.Open();
             //connection.Authenticate();
 
-            MailProviderFactory emailFactory = new ImapProviderFactory();
-            MailConnection connection = emailFactory.CreateConnection();
-            connection.Host = config.Imap.Host;
-            connection.IsSslAuthentication = config.Imap.IsSslAuthentication;
-            connection.Port = config.Imap.Port;
-            connection.Open();
-            MailClient client = emailFactory.CreateClient();
-            client.Authenticate(new MailUserInfo(){Email = "ozzy2106@gmail.com", Password = securePass});
+            //MailProviderFactory emailFactory = new ImapProviderFactory();
+            //MailConnection connection = emailFactory.CreateConnection();
+            //connection.Host = config.Imap.Host;
+            //connection.IsSslAuthentication = config.Imap.IsSslAuthentication;
+            //connection.Port = config.Imap.Port;
+            //connection.Open();
+            //MailClient client = emailFactory.CreateClient();
+            //client.Authenticate(new MailUserInfo(){Email = "ozzy2106@gmail.com", Password = securePass});
 
             Console.ReadLine();
         }

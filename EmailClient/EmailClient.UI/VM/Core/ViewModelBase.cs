@@ -2,16 +2,16 @@
 
 namespace EmailClient.UI.VM.Core
 {
-    internal class ViewModelBase : INotifyPropertyChanged
+    public class ViewModelBase : INotifyPropertyChanged
     {
         private CommandHolder _commands;
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public CommandHolder Commands
         {
             get { return _commands ?? (_commands = new CommandHolder()); }
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public void OnPropertyChanged(string propertyName)
         {

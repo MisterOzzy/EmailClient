@@ -15,5 +15,10 @@ namespace EmailClient.Data
         public bool IsSslAuthentication { get; set; }
 
         public EmailProtocolType Protocol { get; set; }
+
+        public override string ToString()
+        {
+            return Protocol.ToString();
+        }
     }
 }

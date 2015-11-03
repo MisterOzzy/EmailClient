@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace EmailClient.UI.VM.Core
 {
-    internal class RelayCommand : ICommand
+    public class RelayCommand : ICommand
     {
         private readonly Func<object, bool> _canExecute;
         private readonly Action<object> _execute;

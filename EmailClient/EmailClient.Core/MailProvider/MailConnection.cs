@@ -3,6 +3,7 @@ using System.IO;
 using System.Net.Security;
 using System.Net.Sockets;
 using System.Security.Authentication;
+using EmailClient.Tests;
 using EmailClient.Util.Logger;
 
 namespace EmailClient.Core.MailProvider
