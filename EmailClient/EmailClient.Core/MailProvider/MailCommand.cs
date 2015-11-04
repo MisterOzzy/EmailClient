@@ -34,7 +34,7 @@ namespace EmailClient.Core.MailProvider
             }
         }
 
-        public void ExecuteCommand(bool isMultiLineResponse = false)
+        public void ExecuteCommand(bool isMultiLineResponse = false, bool hideCommandInLog = false)
         {
             IsMultiLineResponse = isMultiLineResponse;
 
@@ -42,15 +42,16 @@ namespace EmailClient.Core.MailProvider
                 _response = string.Empty;
 
             string preparedCommand = InitializeCommand();
-            SendCommand(preparedCommand);
+            SendCommand(preparedCommand, hideCommandInLog);
             ReceiveResponse();
         }
 
         protected abstract string InitializeCommand();
 
-        protected virtual void SendCommand(string command)
+        protected virtual void SendCommand(string command, bool hideCommandInLog = false)
         {
-            LoggerHolders.ConsoleLogger.Log("Client: " + command.TrimEnd(CRLF.ToCharArray()));
+            if(!hideCommandInLog)
+                LoggerHolders.ConsoleLogger.Log("Client: " + command.TrimEnd(CRLF.ToCharArray()));
             byte[] bytesCommand = Encoding.ASCII.GetBytes(command.ToCharArray());
             EmailStream.Write(bytesCommand, 0, bytesCommand.Length);
             EmailStream.Flush();

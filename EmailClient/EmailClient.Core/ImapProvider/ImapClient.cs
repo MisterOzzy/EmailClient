@@ -24,8 +24,11 @@ namespace EmailClient.Core.ImapProvider
         public override void Authenticate(MailUserInfo userInfo)
         {
             var command = Connection.CreateCommand();
-            command.Command = string.Format(Imap.IMAP_LOGIN + " {0} {1}", userInfo.Email, GetPassword(userInfo.Password));
-            command.ExecuteCommand();
+            string password = GetPassword(userInfo.Password); 
+            string commandStr = string.Format(Imap.IMAP_LOGIN + " {0} {1}", userInfo.Email, password); 
+            command.Command = commandStr;
+            command.ExecuteCommand(hideCommandInLog: true);
+            LoggerHolders.ConsoleLogger.Log(commandStr.Replace(password, new string('*', password.Length)));
             LoggerHolders.ConsoleLogger.Log(command.Response, LogType.Success); 
         }
 

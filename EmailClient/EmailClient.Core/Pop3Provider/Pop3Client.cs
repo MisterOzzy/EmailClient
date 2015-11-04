@@ -28,8 +28,11 @@ namespace EmailClient.Core.Pop3Provider
             command.Command = string.Format(Pop3.POP3_USER + " {0}", userInfo.Email);
             command.ExecuteCommand();
             LoggerHolders.ConsoleLogger.Log(command.Response);
-            command.Command = string.Format(Pop3.POP3_PASS + " {0}", GetPassword(userInfo.Password));
-            command.ExecuteCommand();
+            string password = GetPassword(userInfo.Password);
+            string commandStr = string.Format(Pop3.POP3_PASS + " {0}", password); 
+            command.Command = commandStr;
+            command.ExecuteCommand(hideCommandInLog: true);
+            LoggerHolders.ConsoleLogger.Log(commandStr.Replace(password, new string('*', password.Length)));
             LoggerHolders.ConsoleLogger.Log(command.Response, LogType.Success);
         }
 
