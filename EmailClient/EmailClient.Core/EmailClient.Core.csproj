@@ -70,10 +70,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EmailClient.Tests\EmailClient.Tests.csproj">
-      <Project>{7746B58C-AB33-4A12-BF89-DA70D973B869}</Project>
-      <Name>EmailClient.Tests</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EmailClient.Util\EmailClient.Util.csproj">
       <Project>{E4D6C4FB-5F93-4057-A43F-BC262C0BEF4A}</Project>
       <Name>EmailClient.Util</Name>
