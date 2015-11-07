@@ -13,6 +13,7 @@ using EmailClient.Core.ImapProvider;
 using EmailClient.Core.MailProvider;
 using EmailClient.Core.Pop3Provider;
 using EmailClient.Data;
+using EmailClient.UI.View;
 using EmailClient.UI.VM.Core;
 using Newtonsoft.Json;
 
@@ -118,7 +119,7 @@ namespace EmailClient.UI.VM
             StackButtonsVisibility = Visibility.Visible;
         }
 
-        public void OkCommand()
+        public void OkCommand(object ownerWindow)
         {
             MailProviderFactory emailFactory = null;
 
@@ -141,6 +142,9 @@ namespace EmailClient.UI.VM
             connection.Open();
             MailClient client = emailFactory.CreateClient();
             client.Authenticate(new MailUserInfo() { Email = _login, Password = _securePassword });
+
+            new MainWindow() { DataContext = new MainWindowVM(client) }.Show();
+            ((Window)ownerWindow).Close();
         }
 
         private void GetConfigurations(string provider)
@@ -169,7 +173,7 @@ namespace EmailClient.UI.VM
             return GridSettingsVisibility == Visibility.Hidden;
         }
 
-        public bool CanExecuteOkCommand()
+        public bool CanExecuteOkCommand(object obj)
         {
             return GridSettingsVisibility == Visibility.Visible;
         }

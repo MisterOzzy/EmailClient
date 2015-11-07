@@ -12,14 +12,14 @@ namespace EmailClient.Core.ImapProvider
 
         public ImapClient(ImapConnection connection)
         {
-            base.Connection = connection;
+            Connection = connection;
         }
 
-        public new ImapConnection Connection
-        {
-            get { return (ImapConnection)base.Connection; }
-            set { base.Connection = value; }
-        }
+        ////public new ImapConnection Connection
+        ////{
+        ////    get { return (ImapConnection)base.Connection; }
+        ////    set { base.Connection = value; }
+        ////}
 
         public override void Authenticate(MailUserInfo userInfo)
         {

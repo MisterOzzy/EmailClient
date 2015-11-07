@@ -89,6 +89,7 @@
     <Compile Include="VM\Core\SymbolHelpers.cs" />
     <Compile Include="VM\Core\ViewModelBase.cs" />
     <Compile Include="VM\LoginWindowVM.cs" />
+    <Compile Include="VM\MainWindowVM.cs" />
     <Page Include="View\LoginWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

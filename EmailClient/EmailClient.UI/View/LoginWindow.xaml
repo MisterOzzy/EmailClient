@@ -1,15 +1,17 @@
 ﻿<Window x:Class="EmailClient.UI.View.LoginWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:view="clr-namespace:EmailClient.UI.VM"
+        xmlns:view="clr-namespace:EmailClient.UI.View"
+        xmlns:vm="clr-namespace:EmailClient.UI.VM"
         xmlns:core="clr-namespace:EmailClient.UI.VM.Core"
         xmlns:interactivity="http://schemas.microsoft.com/expression/2010/interactivity"
         Title="Login" Height="500" Width="400">
     <Window.DataContext>
-        <view:LoginWindowVM></view:LoginWindowVM>
+        <vm:LoginWindowVM></vm:LoginWindowVM>
     </Window.DataContext>
-
+    
     <Grid>
+        
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
@@ -102,7 +104,7 @@
 
         <StackPanel Grid.Row="7" Grid.ColumnSpan="7" Grid.Column="0" HorizontalAlignment="Center" 
                     Orientation="Horizontal" Visibility="{Binding StackButtonsVisibility, UpdateSourceTrigger=PropertyChanged}">
-            <Button Margin="3" MinWidth="60" Command="{Binding OkClick}">OK</Button>
+            <Button Margin="3" MinWidth="60" Command="{Binding OkClick}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}">OK</Button>
             <Button Margin="3" MinWidth="60">Cancel</Button>
         </StackPanel>
     </Grid>

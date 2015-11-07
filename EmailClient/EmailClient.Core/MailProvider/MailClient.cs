@@ -6,7 +6,7 @@ namespace EmailClient.Core.MailProvider
 {
     public abstract class MailClient
     {
-        protected MailConnection Connection { get; set; }
+        public MailConnection Connection { get; protected set; }
 
         public abstract void Authenticate(MailUserInfo userInfo);
 

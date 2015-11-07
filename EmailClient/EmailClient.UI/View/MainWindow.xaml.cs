@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Windows;
+using EmailClient.UI.VM;
 
 
 namespace EmailClient.UI.View
@@ -11,8 +12,7 @@ namespace EmailClient.UI.View
     {
         public MainWindow()
         {
-            InitializeComponent();
-            Title = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            InitializeComponent();     
         }
     }
 }

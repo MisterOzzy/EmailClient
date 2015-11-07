@@ -13,14 +13,14 @@ namespace EmailClient.Core.Pop3Provider
 
         public Pop3Client(Pop3Connection connection)
         {
-            base.Connection = connection;
+            Connection = connection;
         }
 
-        public new Pop3Connection Connection
-        {
-            get { return (Pop3Connection)base.Connection; }
-            set { base.Connection = value; }
-        }
+        ////public new Pop3Connection Connection
+        ////{
+        ////    get { return (Pop3Connection)base.Connection; }
+        ////    set { base.Connection = value; }
+        ////}
 
         public override void Authenticate(MailUserInfo userInfo)
         {
