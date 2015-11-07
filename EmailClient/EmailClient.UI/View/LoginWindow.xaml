@@ -32,11 +32,11 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" Margin="3" Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}">
+        <TextBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="3" Height="22" HorizontalAlignment="Stretch" Margin="3" Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}">
             <TextBox.Style>
                 <Style TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">
                     <Style.Resources>
-                        <VisualBrush x:Key="CueBannerBrush" AlignmentX="Left" AlignmentY="Center" Stretch="None">
+                        <VisualBrush x:Key="TextBoxWatermarkBrush" AlignmentX="Left" AlignmentY="Center" Stretch="None">
                             <VisualBrush.Visual>
                                 <Label Content="Enter email" Foreground="LightGray" Padding="3"/>
                             </VisualBrush.Visual>
@@ -44,10 +44,10 @@
                     </Style.Resources>
                     <Style.Triggers>
                         <Trigger Property="Text" Value="{x:Static sys:String.Empty}">
-                            <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
+                            <Setter Property="Background" Value="{StaticResource TextBoxWatermarkBrush}" />
                         </Trigger>
                         <Trigger Property="Text" Value="{x:Null}">
-                            <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
+                            <Setter Property="Background" Value="{StaticResource TextBoxWatermarkBrush}" />
                         </Trigger>
                         <Trigger Property="IsKeyboardFocused" Value="True">
                             <Setter Property="Background" Value="White" />
@@ -57,6 +57,25 @@
             </TextBox.Style>
         </TextBox>
         <PasswordBox Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" Margin="3" Height="22">
+            <PasswordBox.Style>
+                <Style TargetType="PasswordBox">
+                    <Style.Resources>
+                        <VisualBrush x:Key="PasswordBoxWatermarkBrush" AlignmentX="Left" AlignmentY="Center" Stretch="None">
+                            <VisualBrush.Visual>
+                                <PasswordBox Password="qwertyuiop[]" BorderThickness="0" Foreground="LightGray" Padding="0,0,0,3"/>
+                            </VisualBrush.Visual>
+                        </VisualBrush>
+                    </Style.Resources>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding SecurePassword.Length}" Value="0">
+                            <Setter Property="Background" Value="{StaticResource PasswordBoxWatermarkBrush}"></Setter>
+                        </DataTrigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter Property="Background" Value="White"></Setter>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </PasswordBox.Style>
             <interactivity:Interaction.Behaviors>
                 <core:PasswordBehavior Password="{Binding SecurePassword, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></core:PasswordBehavior>
             </interactivity:Interaction.Behaviors>
