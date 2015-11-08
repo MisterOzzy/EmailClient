@@ -2,12 +2,15 @@
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Security;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using EmailClient.Core.ImapProvider;
 using EmailClient.Core.MailProvider;
+using EmailClient.Core.Pop3Provider;
 using EmailClient.Data;
 using EmailClient.Util.Logger;
 using Newtonsoft.Json;
@@ -28,7 +31,7 @@ namespace EmailClient.Tests
             using (var webClient = new WebClient())
             {
                 webClient.QueryString.Add("provider","gmail.com");
-                Console.WriteLine(webClient.QueryString);
+                //Console.WriteLine(webClient.QueryString);
                 
                 // Выполняем запрос по адресу и получаем ответ в виде строки
                 var response = webClient.DownloadString(url);
@@ -40,7 +43,8 @@ namespace EmailClient.Tests
             //char[] passChars = pass.ToCharArray();
 
             SecureString securePass = new SecureString();
-            reader.ReadLine().ToCharArray().ToList().ForEach(securePass.AppendChar);
+            //reader.ReadLine().ToCharArray().ToList().ForEach(securePass.AppendChar);
+            "Qwerty1234".ToCharArray().ToList().ForEach(securePass.AppendChar);
             IntPtr cvttmpst = Marshal.SecureStringToBSTR(securePass);
             //convert to string using Marshal
             
@@ -54,22 +58,43 @@ namespace EmailClient.Tests
             //connection.Password = Marshal.PtrToStringAuto(cvttmpst);
             //connection.Open();
             //connection.Authenticate();
-            //connection.Host = "imap.mail.ru";
-            //connection.IsSslAuthentication = false;
-            //connection.Port = 143;
-            //connection.TypeProtocol = EmailTypeProtocol.IMAP;
-            //connection.Username = "ozzy.mister@mail.ru";
-            //connection.Open();
-            //connection.Authenticate();
+            
 
             MailProviderFactory emailFactory = new ImapProviderFactory();
             MailConnection connection = emailFactory.CreateConnection();
-            connection.Host = config.Imap.Host;
-            connection.IsSslAuthentication = config.Imap.IsSslAuthentication;
-            connection.Port = config.Imap.Port;
+            //connection.Host = config.Imap.Host;
+            //connection.IsSslAuthentication = config.Imap.IsSslAuthentication;
+            //connection.Port = config.Imap.Port;
+            //connection.Open();
+            //MailClient client = emailFactory.CreateClient();
+            //client.Authenticate(new MailUserInfo() { Email = "ozzy2106@gmail.com", Password = securePass });
+
+            connection.Host = "imap.mail.ru";
+            connection.IsSslAuthentication = false;
+            connection.Port = 143;
             connection.Open();
             MailClient client = emailFactory.CreateClient();
-            client.Authenticate(new MailUserInfo() { Email = "ozzy2106@gmail.com", Password = securePass });
+            MailCommand com = client.Connection.CreateCommand();
+            com.Command = "STARTTLS";
+            com.ExecuteCommand();
+
+            //var ssl = client.Connection._tcpClient.GetStream();
+            //client.Connection._emailStream = ssl;
+            //client.Connection._emailsStreamReader = new StreamReader(ssl);
+            Console.WriteLine(client.Connection._emailsStreamReader.ReadLine());
+
+
+
+            //Thread.Sleep(5000);
+
+            com.Command = "CAPABILITY";
+            com.ExecuteCommand();
+
+            
+
+            LoggerHolders.ConsoleLogger.Log(com.Response, LogType.Debug);
+            client.Authenticate(new MailUserInfo() { Email = "testMailClient@mail.ru", Password = securePass });
+
 
             MailCommand command = client.Connection.CreateCommand();
             //command.Command = "STATUS INBOX (messages)";

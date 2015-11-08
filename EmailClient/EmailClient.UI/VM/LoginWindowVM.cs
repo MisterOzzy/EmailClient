@@ -13,8 +13,10 @@ using EmailClient.Core.ImapProvider;
 using EmailClient.Core.MailProvider;
 using EmailClient.Core.Pop3Provider;
 using EmailClient.Data;
+using EmailClient.Tests;
 using EmailClient.UI.View;
 using EmailClient.UI.VM.Core;
+using EmailClient.Util.Logger;
 using Newtonsoft.Json;
 
 namespace EmailClient.UI.VM
@@ -114,7 +116,7 @@ namespace EmailClient.UI.VM
 
         public void LoginCommand()
         {
-            GetConfigurations("gmail.com");
+            GetConfigurations("gmail.comss");
             GridSettingsVisibility = Visibility.Visible;
             StackButtonsVisibility = Visibility.Visible;
         }
@@ -150,17 +152,24 @@ namespace EmailClient.UI.VM
         private void GetConfigurations(string provider)
         {
             string url = @"http://localhost:3627/EmailConfigurationService.svc/EmailProvider";
-            EmailProvider config = null;
+            EmailProvider config = new EmailProvider();
+            config.Pop3 = new EmailConfiguration();
+            config.Pop3.Protocol = EmailProtocolType.Pop3;
+            config.Imap = new EmailConfiguration();
+            config.Imap.Protocol = EmailProtocolType.Imap;
+
 
             // Создаём объект WebClient
             using (var webClient = new WebClient())
             {
                 webClient.QueryString.Add("provider", provider);
-                Console.WriteLine(webClient.QueryString);
 
                 // Выполняем запрос по адресу и получаем ответ в виде строки
                 var response = webClient.DownloadString(url);
-                config = JsonConvert.DeserializeObject<EmailProvider>(response);
+                LoggerHolders.ConsoleLogger.Log(response, LogType.Debug);
+                
+                if(!string.IsNullOrEmpty(response))
+                    config = JsonConvert.DeserializeObject<EmailProvider>(response);
             }
             _emailConfigurations.Add(config.Pop3);
             _emailConfigurations.Add(config.Imap);

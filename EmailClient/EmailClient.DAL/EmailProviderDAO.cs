@@ -19,7 +19,7 @@ namespace EmailClient.DAL
             {
                 EmailProvider emailProvider = null;
                 if(!_configuration.ContainKey(provider))
-                    throw new ProviderNotFoundException();
+                    return null;
                 try
                 {
                     emailProvider = _configuration[provider];
