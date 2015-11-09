@@ -23,20 +23,20 @@ namespace EmailClient.Tests
         
         static void Main(string[] args)
         {
-            string result = "";
-            string url = @"http://localhost:3627/EmailConfigurationService.svc/EmailProvider";
-            EmailProvider config = null; 
+            //string result = "";
+            //string url = @"http://localhost:3627/EmailConfigurationService.svc/EmailProvider";
+            //EmailProvider config = null; 
 
             // Создаём объект WebClient
-            using (var webClient = new WebClient())
-            {
-                webClient.QueryString.Add("provider","gmail.com");
-                //Console.WriteLine(webClient.QueryString);
+            //using (var webClient = new WebClient())
+            //{
+            //    webClient.QueryString.Add("provider","gmail.com");
+            //    //Console.WriteLine(webClient.QueryString);
                 
-                // Выполняем запрос по адресу и получаем ответ в виде строки
-                var response = webClient.DownloadString(url);
-                config = JsonConvert.DeserializeObject<EmailProvider>(response);
-            }
+            //    // Выполняем запрос по адресу и получаем ответ в виде строки
+            //    var response = webClient.DownloadString(url);
+            //    config = JsonConvert.DeserializeObject<EmailProvider>(response);
+            //}
             //Get password
             StreamReader reader = new StreamReader("Test.txt");
             //reader.ReadLine();
@@ -44,7 +44,7 @@ namespace EmailClient.Tests
 
             SecureString securePass = new SecureString();
             //reader.ReadLine().ToCharArray().ToList().ForEach(securePass.AppendChar);
-            "Qwerty1234".ToCharArray().ToList().ForEach(securePass.AppendChar);
+            reader.ReadLine().ToCharArray().ToList().ForEach(securePass.AppendChar);
             IntPtr cvttmpst = Marshal.SecureStringToBSTR(securePass);
             //convert to string using Marshal
             
@@ -65,36 +65,42 @@ namespace EmailClient.Tests
             //connection.Host = config.Imap.Host;
             //connection.IsSslAuthentication = config.Imap.IsSslAuthentication;
             //connection.Port = config.Imap.Port;
-            //connection.Open();
-            //MailClient client = emailFactory.CreateClient();
-            //client.Authenticate(new MailUserInfo() { Email = "ozzy2106@gmail.com", Password = securePass });
-
-            connection.Host = "imap.mail.ru";
-            connection.IsSslAuthentication = false;
-            connection.Port = 143;
+            connection.Host = "imap.gmail.com";
+            connection.IsSslAuthentication = true;
+            connection.Port = 993;
             connection.Open();
             MailClient client = emailFactory.CreateClient();
-            MailCommand com = client.Connection.CreateCommand();
-            com.Command = "STARTTLS";
-            com.ExecuteCommand();
+            client.Authenticate(new MailUserInfo() { Email = "ozzy2106@gmail.com", Password = securePass });
+
+            //connection.Host = "imap.mail.ru";
+            //connection.IsSslAuthentication = true;
+            //connection.Port = 143;
+            //connection.Open();
+            //MailClient client = emailFactory.CreateClient();
+            //MailCommand com = client.Connection.CreateCommand();
+            //com.Command = "STARTTLS";
+            //com.ExecuteCommand();
 
             //var ssl = client.Connection._tcpClient.GetStream();
             //client.Connection._emailStream = ssl;
             //client.Connection._emailsStreamReader = new StreamReader(ssl);
-            Console.WriteLine(client.Connection._emailsStreamReader.ReadLine());
+            //Console.WriteLine(client.Connection._emailsStreamReader.ReadLine());
 
 
 
             //Thread.Sleep(5000);
 
-            com.Command = "CAPABILITY";
-            com.ExecuteCommand();
+            //com.Command = "CAPABILITY";
+            //com.ExecuteCommand();
 
             
 
-            LoggerHolders.ConsoleLogger.Log(com.Response, LogType.Debug);
-            client.Authenticate(new MailUserInfo() { Email = "testMailClient@mail.ru", Password = securePass });
+            //LoggerHolders.ConsoleLogger.Log(com.Response, LogType.Debug);
 
+
+            //client.Authenticate(new MailUserInfo() { Email = "ozzyTestMail@mail.ru", Password = securePass });
+            //com.Command = "AUTH PLAIN";
+            //com.ExecuteCommand();
 
             MailCommand command = client.Connection.CreateCommand();
             //command.Command = "STATUS INBOX (messages)";
@@ -105,57 +111,36 @@ namespace EmailClient.Tests
             command.ExecuteCommand();
             LoggerHolders.ConsoleLogger.Log(command.Response);
 
-            command.Command = "FETCH " + 5320 + " (body[header.fields (from subject date)])";
+            command.Command = "FETCH " + 5344 + " (body[header.fields (from subject date)])";
             command.ExecuteCommand();
-            //byte[] resBytes =  Encoding.ASCII.GetBytes(command.Response);
-            //string str = Convert.ToBase64String(resBytes);
+            LoggerHolders.ConsoleLogger.Log(command.Response, LogType.Debug);
 
-
-            LoggerHolders.ConsoleLogger.Log(command.Response);
-
-            string pattern = @"\b(From: =\?UTF\-8\?B\?(?<base64Text>\w+=)\?=)";
+            string pattern = @"\b(From: =\?UTF\-8\?B\?(?<base64Text>[A-Za-z0-9=]+)\?=)";
             Regex regex = new Regex(pattern);
-
-            //var newStr = Regex.Replace(command.Response, pattern, "${base64Text}");
-
-
 
             // Получаем совпадения в экземпляре класса Match
             Match match = regex.Match(command.Response);
+            Console.WriteLine(match.Groups["base64Text"].Value);
 
-             //отображаем все совпадения
-            while (match.Success)
-            {
-                // Т.к. мы выделили в шаблоне одну группу (одни круглые скобки),
-                // ссылаемся на найденное значение через свойство Groups класса Match
-                Console.WriteLine(match.Groups["base64Text"]);
+            string fromStr = match.Groups["base64Text"].Value;
 
-                // Переходим к следующему совпадению
-                match = match.NextMatch();
-            }
+            //var decodedString = DecodedString("PSttdTSV2CL8KtyuTdicqhHuvhKW2MmW1446681346");
 
-            //LoggerHolders.ConsoleLogger.Log(newStr, LogType.Warning);
 
-            Match fromMatch = Regex.Match(command.Response, @"From:");
-            LoggerHolders.ConsoleLogger.Log(fromMatch.Value, LogType.Warning);
-            Console.ReadLine();
 
-            string from = command.Response.Substring(command.Response.IndexOf("From: ") + "From: ".Length, 28);
+            //LoggerHolders.ConsoleLogger.Log(decodedString, LogType.Debug);
 
-            
-            LoggerHolders.ConsoleLogger.Log(from);
-
-            Console.WriteLine("!!!!!!!!!!!!!!!!!" + from.Substring("=?utf-8?B?".Length));
-
-            string forBase64 = from.Substring("=?utf-8?B?".Length).TrimEnd('=').TrimEnd('?');
-            Console.WriteLine(forBase64);
-            var decodedString = DecodedString(forBase64);
-
-            LoggerHolders.ConsoleLogger.Log(decodedString);
-
-            command.Command = "FETCH " + 5320 + " body[text]";
+            command.Command = "FETCH " + 5344 + " body[text]";
             command.ExecuteCommand();
+            ////StreamWriter writer = new StreamWriter(@"C:\TestMes.txt");
+            ////writer.Write(command.Response);
+            ////writer.Close();
+            
             LoggerHolders.ConsoleLogger.Log(command.Response, LogType.Debug);
+            TextWriter writer = new StreamWriter(@"C:\aaaa.txt");
+            writer.Write(command.Response);
+            writer.Close();
+            //LoggerHolders.ConsoleLogger.Log(command.Response, LogType.Debug);
 
             LoggerHolders.ConsoleLogger.Log(DecodedString("IFBSSVZFRUVFRUVFRUVFRUVFRUVFRUVFRUVU"), LogType.Debug);
             LoggerHolders.ConsoleLogger.Log(DecodedString("CjxIVE1MPjxCT0RZPlBSSVZFRUVFRUVFRUVFRUVFRUVFRUVFRUVUPC9CT0RZPjwvSFRNTD4K"), LogType.Debug);

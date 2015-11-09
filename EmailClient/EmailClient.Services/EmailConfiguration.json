@@ -1,0 +1,23 @@
+{
+  "gmail.com": {
+    "Name": "gmail.com",
+    "Smtp": {
+      "Host": "smtp.gmail.com",
+      "Port": 465,
+      "IsSslAuthentication": true,
+      "Protocol": 3
+    },
+    "Pop3": {
+      "Host": "pop.gmail.com",
+      "Port": 995,
+      "IsSslAuthentication": true,
+      "Protocol": 2
+    },
+    "Imap": {
+      "Host": "imap.gmail.com",
+      "Port": 993,
+      "IsSslAuthentication": true,
+      "Protocol": 1
+    }
+  }
+}
