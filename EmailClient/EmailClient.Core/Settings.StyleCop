@@ -1,8 +1,8 @@
 <StyleCopSettings Version="105">
   <Analyzers>
-    <Analyzer AnalyzerId="StyleCop.CSharp.ReadabilityRules">
+    <Analyzer AnalyzerId="StyleCopPlus.StyleCopPlusRules">
       <Rules>
-        <Rule Name="PrefixLocalCallsWithThis">
+        <Rule Name="CodeLineMustNotBeLongerThan">
           <RuleSettings>
             <BooleanProperty Name="Enabled">False</BooleanProperty>
           </RuleSettings>

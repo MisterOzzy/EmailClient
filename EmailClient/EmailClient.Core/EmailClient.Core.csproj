@@ -50,6 +50,7 @@
     <Compile Include="MailMessage\Encoding\Base64Encoder.cs" />
     <Compile Include="MailMessage\Encoding\IMailEncoder.cs" />
     <Compile Include="MailMessage\Encoding\MailEncoding.cs" />
+    <Compile Include="MailMessage\MailMessageParseUtil\MailMessageRegExPattern.cs" />
     <Compile Include="MailMessage\Encoding\QuotedPrintableEncoder.cs" />
     <Compile Include="MailMessage\MailAttachment.cs" />
     <Compile Include="MailMessage\MailMessage.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="MailMessage\MailMessageBodyType.cs" />
     <Compile Include="MailMessage\MailMessageBuilder.cs" />
     <Compile Include="MailMessage\MailMessageDirector.cs" />
+    <Compile Include="MailMessage\MailMessageParseUtil\MailMessageResponseParser.cs" />
     <Compile Include="MailMessage\ReceiveMailMessageBuilder.cs" />
     <Compile Include="MailProvider\MailClient.cs" />
     <Compile Include="MailProvider\MailConnectionStateType.cs" />

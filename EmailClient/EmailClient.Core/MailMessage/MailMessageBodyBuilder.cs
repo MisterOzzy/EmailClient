@@ -10,6 +10,6 @@ namespace EmailClient.Core.MailMessage
     {
         void BuildBody();
 
-        void GetBody();
+        string GetBody();
     }
 }

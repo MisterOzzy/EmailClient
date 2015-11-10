@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.InteropServices;
+using CharSetEncoding = System.Text.Encoding;
 
 namespace EmailClient.Core.MailMessage.Encoding
 {
@@ -25,7 +23,9 @@ namespace EmailClient.Core.MailMessage.Encoding
 
         public string Decode(string strToDecode, string charset)
         {
-            throw new NotImplementedException();
+            byte[] data = Convert.FromBase64String(strToDecode);
+            CharSetEncoding encoding = CharSetEncoding.GetEncoding(charset);
+            return encoding.GetString(data);
         }
     }
 }

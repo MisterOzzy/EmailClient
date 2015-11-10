@@ -14,9 +14,16 @@ namespace EmailClient.Core.MailMessage
 
         public string From { get; set; }
 
+        public string FromName { get; set; }
+
         public string Subject { get; set; }
 
         public DateTime Date { get; set; }
+
+        public DateTime DateLocal
+        {
+            get { return TimeZone.CurrentTimeZone.ToLocalTime(Date); }
+        }
 
         public Dictionary<MailMessageBodyType, MailMessageBody> Body { get; set; }
     }

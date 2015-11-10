@@ -111,18 +111,29 @@ namespace EmailClient.Tests
             command.ExecuteCommand();
             LoggerHolders.ConsoleLogger.Log(command.Response);
 
-            command.Command = "FETCH " + 5344 + " (body[header.fields (from subject date)])";
+            command.Command = "FETCH " + 5343 + " (body[header.fields (from subject date)])";
             command.ExecuteCommand();
             LoggerHolders.ConsoleLogger.Log(command.Response, LogType.Debug);
-
-            string pattern = @"\b(From: =\?UTF\-8\?B\?(?<base64Text>[A-Za-z0-9=]+)\?=)";
-            Regex regex = new Regex(pattern);
-
+            StreamWriter streamWriter = new StreamWriter(@"C:\header.txt");
+            streamWriter.Write(command.Response);
+            streamWriter.Close();
+            string pattern = @"\b(From: =\?(?<charset>[A-Za-z0-9-]+)\?(?<encoding>(B|Q))\?(?<base64Text>[A-Za-z0-9=]+)\?=) \<(?<email>[A-Za-z0-9@.]+)\>";
+            string forTest = "From: Mister Ozzy <emaui>";
+            string fromWithOutEncoding = @"From: (?<name>[A-Za-z0-9\s]+) \<(?<email>[A-Za-z0-9@.]+)\>";
+            string Date = @"Date: (?<date>[A-Za-z0-9,+:\s]+)";
+            string SubjectWithEncoding =
+                @"Subject: =\?(?<charset>[A-Za-z0-9-]+)\?(?<encoding>(B|Q))\?(?<subject>[A-Za-z0-9=]+)\?=";
+            Regex regex = new Regex(SubjectWithEncoding);
+            ////Console.WriteLine(pattern.Contains(@"From: =\?"));
             // Получаем совпадения в экземпляре класса Match
+            ////Match match = regex.Match(command.Response);
             Match match = regex.Match(command.Response);
-            Console.WriteLine(match.Groups["base64Text"].Value);
-
-            string fromStr = match.Groups["base64Text"].Value;
+            Console.WriteLine(match.Groups["charset"].Value);
+            ////Console.WriteLine(match.Groups["charset"].Value);
+            Console.WriteLine(match.Groups["encoding"].Value);
+            ////Console.WriteLine(match.Groups["email"].Value);
+            string fromStr = match.Groups["subject"].Value;
+            Console.WriteLine(fromStr);
 
             //var decodedString = DecodedString("PSttdTSV2CL8KtyuTdicqhHuvhKW2MmW1446681346");
 
@@ -130,7 +141,7 @@ namespace EmailClient.Tests
 
             //LoggerHolders.ConsoleLogger.Log(decodedString, LogType.Debug);
 
-            command.Command = "FETCH " + 5344 + " body[text]";
+            command.Command = "FETCH " + 5343 + " body[text]";
             command.ExecuteCommand();
             ////StreamWriter writer = new StreamWriter(@"C:\TestMes.txt");
             ////writer.Write(command.Response);
