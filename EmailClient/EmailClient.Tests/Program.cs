@@ -46,7 +46,7 @@ namespace EmailClient.Tests
 
             SecureString securePass = new SecureString();
             //reader.ReadLine().ToCharArray().ToList().ForEach(securePass.AppendChar);
-            reader.ReadLine().ToCharArray().ToList().ForEach(securePass.AppendChar);
+            "Qwerty1234".ToCharArray().ToList().ForEach(securePass.AppendChar);
             IntPtr cvttmpst = Marshal.SecureStringToBSTR(securePass);
 
 
@@ -56,13 +56,15 @@ namespace EmailClient.Tests
             //connection.Host = config.Imap.Host;
             //connection.IsSslAuthentication = config.Imap.IsSslAuthentication;
             //connection.Port = config.Imap.Port;
-            connection.SecureTypeConnection = new SslMailMailConnection();
-            connection.Host = "imap.gmail.com";
+            //connection.SecureTypeConnection = new SslMailConnection();
+            connection.Host = "imap.mail.ru";
             connection.IsSslAuthentication = true;
-            connection.Port = 993;
-            connection.Open();
+            connection.Port = 143;
+            SecureMailConnectionDecorator sslMailConnection = new TlsMailConnectionDecorator();
+            sslMailConnection.MailConnection = connection;
+            sslMailConnection.Open();
             MailClient client = emailFactory.CreateClient();
-            client.Authenticate(new MailUserInfo() { Email = "ozzy2106@gmail.com", Password = securePass });
+            client.Authenticate(new MailUserInfo() { Email = "ozzytestmail@mail.ru", Password = securePass });
 
             //connection.Host = "imap.mail.ru";
             //connection.IsSslAuthentication = true;

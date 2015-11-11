@@ -12,6 +12,6 @@
         public const string SubjectWithEncoding =
             @"Subject: =\?(?<charset>[A-Za-z0-9-]+)\?(?<encoding>(B|Q))\?(?<subject>[A-Za-z0-9=\s]+)\?=";
 
-        public const string Date = @"Date: (?<date>[A-Za-z0-9,+:\s]+)";
+        public const string Date = @"Date: (?<date>[A-Za-z0-9,+:\s]+) \+[0-9]{4}";
     }
 }

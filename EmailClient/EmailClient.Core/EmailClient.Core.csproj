@@ -62,6 +62,7 @@
     <Compile Include="MailMessage\MailMessageParseUtil\MailMessageResponseParser.cs" />
     <Compile Include="MailMessage\ReceiveMailMessageBuilder.cs" />
     <Compile Include="MailProvider\MailClient.cs" />
+    <Compile Include="MailProvider\MailConnectionComponent.cs" />
     <Compile Include="MailProvider\MailConnectionStateType.cs" />
     <Compile Include="MailProvider\MailProviderFactory.cs" />
     <Compile Include="MailProvider\MailUserInfo.cs" />
@@ -73,10 +74,10 @@
     <Compile Include="ImapProvider\ImapClient.cs" />
     <Compile Include="ImapProvider\ImapConnection.cs" />
     <Compile Include="ImapProvider\ImapProviderFactory.cs" />
-    <Compile Include="MailProvider\SecureConnection\SecureMailConnection.cs" />
-    <Compile Include="MailProvider\SecureConnection\NoSecureMailMailConnection.cs" />
-    <Compile Include="MailProvider\SecureConnection\SslMailMailConnection.cs" />
-    <Compile Include="MailProvider\SecureConnection\TlsMailMailConnection.cs" />
+    <Compile Include="MailProvider\SecureConnection\NoSecureMailConnectionDecorator.cs" />
+    <Compile Include="MailProvider\SecureConnection\SecureMailConnectionDecorator.cs" />
+    <Compile Include="MailProvider\SecureConnection\SslMailConnectionDecorator.cs" />
+    <Compile Include="MailProvider\SecureConnection\TlsMailConnectionDecorator.cs" />
     <Compile Include="Pop3Provider\Pop3.cs" />
     <Compile Include="Pop3Provider\Pop3Client.cs" />
     <Compile Include="Pop3Provider\Pop3Command.cs" />

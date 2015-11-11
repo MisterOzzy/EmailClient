@@ -26,5 +26,10 @@ namespace EmailClient.Core.MailMessage
         }
 
         public Dictionary<MailMessageBodyType, MailMessageBody> Body { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format("From: {0} <{1}>\n Subject: {2}\n Date: {3}\n", FromName, From, Subject, DateLocal);
+        }
     }
 }

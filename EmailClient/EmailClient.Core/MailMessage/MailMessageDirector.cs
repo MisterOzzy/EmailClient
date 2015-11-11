@@ -17,9 +17,15 @@ namespace EmailClient.Core.MailMessage
 
         public void ConstructMailMessage()
         {
-            _mailMessageBuilder.BuildFrom();
-            _mailMessageBuilder.BuildDate();
-            _mailMessageBuilder.BuildSubject();
+            try
+            {
+                _mailMessageBuilder.BuildFrom();
+                _mailMessageBuilder.BuildDate();
+                _mailMessageBuilder.BuildSubject();
+            }
+            catch
+            {
+            }
         }
     }
 }

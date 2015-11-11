@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 using System.Net;
-using System.Runtime.InteropServices;
 using System.Security;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using EmailClient.Core.ImapProvider;
 using EmailClient.Core.MailProvider;
+using EmailClient.Core.MailProvider.SecureConnection;
 using EmailClient.Core.Pop3Provider;
 using EmailClient.Data;
 using EmailClient.Tests;
@@ -116,7 +111,7 @@ namespace EmailClient.UI.VM
 
         public void LoginCommand()
         {
-            GetConfigurations("gmail.comss");
+            GetConfigurations("gmail.com");
             GridSettingsVisibility = Visibility.Visible;
             StackButtonsVisibility = Visibility.Visible;
         }
@@ -141,7 +136,10 @@ namespace EmailClient.UI.VM
             connection.Host = _selectedReceiveConfiguration.Host;
             connection.IsSslAuthentication = _selectedReceiveConfiguration.IsSslAuthentication;
             connection.Port = _selectedReceiveConfiguration.Port;
-            connection.Open();
+            ////connection.Open();
+            SslMailConnectionDecorator sslMailConnectionDecorator = new SslMailConnectionDecorator();
+            sslMailConnectionDecorator.MailConnection = connection;
+            sslMailConnectionDecorator.Open();
             MailClient client = emailFactory.CreateClient();
             client.Authenticate(new MailUserInfo() { Email = _login, Password = _securePassword });
 
@@ -185,12 +183,6 @@ namespace EmailClient.UI.VM
         public bool CanExecuteOkCommand(object obj)
         {
             return GridSettingsVisibility == Visibility.Visible;
-        }
-
-        protected string GetPassword(SecureString passSecureString)
-        {
-            IntPtr cvttmpst = Marshal.SecureStringToBSTR(passSecureString);
-            return Marshal.PtrToStringAuto(cvttmpst);
         }
     }
 }

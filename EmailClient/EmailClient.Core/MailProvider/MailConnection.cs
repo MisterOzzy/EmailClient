@@ -9,18 +9,24 @@ using EmailClient.Util.Logger;
 
 namespace EmailClient.Core.MailProvider
 {
-    public abstract class MailConnection : IDisposable
+    public abstract class MailConnection : MailConnectionComponent, IDisposable
     {
-        protected StreamReader _emailsStreamReader;
-        protected Stream _emailStream;
-        protected TcpClient _tcpClient;
+        ////protected StreamReader _emailsStreamReader;
+        ////protected Stream _emailStream;
+        ////protected TcpClient _tcpClient;
         private MailConnectionStateType _state = MailConnectionStateType.None;
-        private string _host;
-        private int _port;
+        ////private string _host;
+        ////private int _port;
+
+        public TcpClient TcpClient
+        {
+            get { return _tcpClient; }
+        }
 
         public StreamReader EmailStreamReader
         {
-            get { return _emailsStreamReader; }
+            get { return _emailStreamReader; }
+            set { _emailStreamReader = value; }
         }
 
         ////public SecureMailConnection SecureTypeConnection { get; set; }
@@ -28,6 +34,7 @@ namespace EmailClient.Core.MailProvider
         public Stream EmailStream
         {
             get { return _emailStream; }
+            set { _emailStream = value; }
         }
 
         public string Host
@@ -46,8 +53,17 @@ namespace EmailClient.Core.MailProvider
 
         public MailTypeProtocol TypeProtocol { get; set; }
 
-        public virtual void Open()
+        public sealed override void Open()
         {
+            try
+            {
+                _tcpClient = new TcpClient(_host, _port);
+            }
+            catch (Exception ex)
+            {
+                LoggerHolders.ConsoleLogger.Log("Exception:", LogType.Critical, ex);
+            }
+
             ////if (SecureTypeConnection != null)
             ////    SecureTypeConnection.Open();
             ////////if (IsSslAuthentication)
@@ -83,15 +99,15 @@ namespace EmailClient.Core.MailProvider
             ////LoggerHolders.ConsoleLogger.Log(sResult);
         }
 
-        public virtual MailCommand CreateCommand()
-        {
-            return null;
-        }
+        //public virtual MailCommand CreateCommand()
+        //{
+        //    return null;
+        //}
         
         public void Close()
         {
             _emailStream.Close();
-            _emailsStreamReader.Close();
+            _emailStreamReader.Close();
             _tcpClient.Close();
         }
 

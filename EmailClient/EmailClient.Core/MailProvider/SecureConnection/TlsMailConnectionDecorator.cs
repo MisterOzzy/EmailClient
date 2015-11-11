@@ -12,22 +12,25 @@ using EmailClient.Util.Logger;
 
 namespace EmailClient.Core.MailProvider.SecureConnection
 {
-    public class TlsMailMailConnection : SecureMailConnection
+    public class TlsMailConnectionDecorator : SecureMailConnectionDecorator
     {
         public override void Open()
         {
             base.Open();
-            MailCommand command = CreateCommand();
+            MailConnection.EmailStreamReader = new StreamReader(MailConnection.TcpClient.GetStream());
+            MailConnection.EmailStream = MailConnection.TcpClient.GetStream();
+            LoggerHolders.ConsoleLogger.Log(MailConnection.EmailStreamReader.ReadLine());
+            MailCommand command = MailConnection.CreateCommand();
             command.Command = "STARTTLS";
             command.ExecuteCommand();
-            _emailsStreamReader = new StreamReader(_tcpClient.GetStream());
-            LoggerHolders.ConsoleLogger.Log(_emailsStreamReader.ReadLine());
 
-            var sslStrm = new SslStream(_tcpClient.GetStream(), false);
+            LoggerHolders.ConsoleLogger.Log(command.Response);
+
+            var sslStrm = new SslStream(MailConnection.TcpClient.GetStream(), false);
 
             try
             {
-                sslStrm.AuthenticateAsClient(Host);
+                sslStrm.AuthenticateAsClient(MailConnection.Host);
             }
             catch (AuthenticationException ex)
             {
@@ -36,11 +39,11 @@ namespace EmailClient.Core.MailProvider.SecureConnection
                 {
                     LoggerHolders.ConsoleLogger.Log("Exception", LogType.Critical, ex.InnerException);
                 }
-                _tcpClient.Close();
+                MailConnection.TcpClient.Close();
             }
 
-            _emailStream = sslStrm;
-            _emailsStreamReader = new StreamReader(sslStrm);
+            MailConnection.EmailStream = sslStrm;
+            MailConnection.EmailStreamReader = new StreamReader(sslStrm);
         }
     }
 }
