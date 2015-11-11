@@ -20,7 +20,7 @@ namespace EmailClient.Core.MailMessage
 
         public void BuildFrom()
         {
-            string conditionPattern = @"From: =\?";
+            string conditionPattern = @"From: =?";
             string fromPattern = MailMessageRegExPattern.FromWithOutEncoding;
             Regex regex;
             Match match;
@@ -46,7 +46,7 @@ namespace EmailClient.Core.MailMessage
 
         public void BuildSubject()
         {
-            string conditionPattern = @"Subject: =\?";
+            string conditionPattern = @"Subject: =?";
             string subject = MailMessageResponseParser.Parse(_responseFromServer, conditionPattern,
                 MailMessageRegExPattern.SubjectWithEncoding, MailMessageRegExPattern.SubjectWithOutEncoding, "subject");
             lock (_lockObjMail)

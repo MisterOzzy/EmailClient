@@ -55,9 +55,9 @@
     <Compile Include="MailMessage\MailAttachment.cs" />
     <Compile Include="MailMessage\MailMessage.cs" />
     <Compile Include="MailMessage\MailMessageBody.cs" />
-    <Compile Include="MailMessage\MailMessageBodyBuilder.cs" />
+    <Compile Include="MailMessage\IMailMessageBodyBuilder.cs" />
     <Compile Include="MailMessage\MailMessageBodyType.cs" />
-    <Compile Include="MailMessage\MailMessageBuilder.cs" />
+    <Compile Include="MailMessage\IMailMessageBuilder.cs" />
     <Compile Include="MailMessage\MailMessageDirector.cs" />
     <Compile Include="MailMessage\MailMessageParseUtil\MailMessageResponseParser.cs" />
     <Compile Include="MailMessage\ReceiveMailMessageBuilder.cs" />
@@ -73,6 +73,10 @@
     <Compile Include="ImapProvider\ImapClient.cs" />
     <Compile Include="ImapProvider\ImapConnection.cs" />
     <Compile Include="ImapProvider\ImapProviderFactory.cs" />
+    <Compile Include="MailProvider\SecureConnection\SecureMailConnection.cs" />
+    <Compile Include="MailProvider\SecureConnection\NoSecureMailMailConnection.cs" />
+    <Compile Include="MailProvider\SecureConnection\SslMailMailConnection.cs" />
+    <Compile Include="MailProvider\SecureConnection\TlsMailMailConnection.cs" />
     <Compile Include="Pop3Provider\Pop3.cs" />
     <Compile Include="Pop3Provider\Pop3Client.cs" />
     <Compile Include="Pop3Provider\Pop3Command.cs" />

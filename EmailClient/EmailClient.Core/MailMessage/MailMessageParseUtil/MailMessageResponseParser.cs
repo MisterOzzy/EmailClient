@@ -16,18 +16,19 @@ namespace EmailClient.Core.MailMessage.MailMessageParseUtil
             string strEncoding = "encoding")
         {
             bool isEncoded = strForParsing.Contains(checkEncodedStr);
-            Regex regex = new Regex(strForParsing);
+            string changedPattern = isEncoded ? patternEncoding : patternWithOutEncoding;
+            Regex regex = new Regex(changedPattern);
             Match match;
-
+            
             if (isEncoded)
             {
-                match = regex.Match(patternEncoding);
+                match = regex.Match(strForParsing);
                 string encoding = match.Groups[strEncoding].Value;
                 string charset = match.Groups[strCharset].Value;
                 string groupName = match.Groups[strGroupNameToDecode].Value;
                 return MailEncoding.GetMailEncoder(encoding).Decode(groupName, charset);
             }
-            match = regex.Match(patternWithOutEncoding);
+            match = regex.Match(strForParsing);
             return match.Groups[strGroupNameToDecode].Value;
         }
 
@@ -36,7 +37,7 @@ namespace EmailClient.Core.MailMessage.MailMessageParseUtil
             string strEncoding = "encoding")
         {
             string groupName = match.Groups[strGroupNameToDecode].Value;
-            if (isEncoded)
+            if (!isEncoded)
                 return groupName;
             string encoding = match.Groups[strEncoding].Value;
             string charset = match.Groups[strCharset].Value;
