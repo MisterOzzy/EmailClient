@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web.Hosting;
 using System.Windows;
 using EmailClient.Core.ImapProvider;
 using EmailClient.Core.MailMessage;
@@ -36,6 +39,7 @@ namespace EmailClient.UI.VM
 
         private void LoadFirs100Messages()
         {
+            StringBuilder builde = new StringBuilder(100);
             MailCommand command = _client.Connection.CreateCommand();
             command.Command = "STATUS INBOX (messages)";
             command.ExecuteCommand();
@@ -49,10 +53,12 @@ namespace EmailClient.UI.VM
             command.ExecuteCommand();
             LoggerHolders.ConsoleLogger.Log(command.Response);
 
-            for (int i = count; i > count - 100; i--)
+            for (int i = count; i > count - 300; i--)
             {
                 command.Command = "FETCH " + i + " (body[header.fields (from subject date)])";
                 command.ExecuteCommand();
+                builde.AppendLine(command.Response);
+                builde.AppendLine(Environment.NewLine);
                 IMailMessageBuilder builder = new ReceiveMailMessageBuilder(command.Response);
                 MailMessageDirector director = new MailMessageDirector(builder);
                 director.ConstructMailMessage();
@@ -68,7 +74,20 @@ namespace EmailClient.UI.VM
                     LoggerHolders.ConsoleLogger.Log("Exception:", LogType.Error, ex);
                 }                      
             }
+            try
+            {
+                string path = @"C:\MAILdump.log";
+                StreamWriter writer = new StreamWriter(path);
+                writer.Write(builde.ToString());
+                writer.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+            
 
+            
            
 
 

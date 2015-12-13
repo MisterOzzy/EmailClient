@@ -19,12 +19,13 @@ namespace EmailClient.Core.MailMessage
         {
             try
             {
+                _mailMessageBuilder.BuildDate();                
                 _mailMessageBuilder.BuildFrom();
-                _mailMessageBuilder.BuildDate();
                 _mailMessageBuilder.BuildSubject();
             }
-            catch
+            catch(Exception ex)
             {
+                string aaa = ex.ToString();
             }
         }
     }

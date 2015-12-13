@@ -29,7 +29,7 @@ namespace EmailClient.Core.MailMessage
 
         public override string ToString()
         {
-            return string.Format("From: {0} <{1}>\n Subject: {2}\n Date: {3}\n", FromName, From, Subject, DateLocal);
+            return string.Format("From: {0} !!!!<!!!{1}!!!>\nSubject: {2}\nDate: {3}\n", FromName, From, Subject, DateLocal);
         }
     }
 }

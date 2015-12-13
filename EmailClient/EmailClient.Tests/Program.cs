@@ -40,31 +40,31 @@ namespace EmailClient.Tests
             //    config = JsonConvert.DeserializeObject<EmailProvider>(response);
             //}
             //Get password
-            StreamReader reader = new StreamReader("Test.txt");
-            //reader.ReadLine();
-            //char[] passChars = pass.ToCharArray();
+            //StreamReader reader = new StreamReader("Test.txt");
+            ////reader.ReadLine();
+            ////char[] passChars = pass.ToCharArray();
 
-            SecureString securePass = new SecureString();
-            //reader.ReadLine().ToCharArray().ToList().ForEach(securePass.AppendChar);
-            "Qwerty1234".ToCharArray().ToList().ForEach(securePass.AppendChar);
-            IntPtr cvttmpst = Marshal.SecureStringToBSTR(securePass);
+            //SecureString securePass = new SecureString();
+            ////reader.ReadLine().ToCharArray().ToList().ForEach(securePass.AppendChar);
+            //"Qwerty1234".ToCharArray().ToList().ForEach(securePass.AppendChar);
+            //IntPtr cvttmpst = Marshal.SecureStringToBSTR(securePass);
 
 
 
-            MailProviderFactory emailFactory = new ImapProviderFactory();
-            MailConnection connection = emailFactory.CreateConnection();
-            //connection.Host = config.Imap.Host;
-            //connection.IsSslAuthentication = config.Imap.IsSslAuthentication;
-            //connection.Port = config.Imap.Port;
-            //connection.SecureTypeConnection = new SslMailConnection();
-            connection.Host = "imap.mail.ru";
-            connection.IsSslAuthentication = true;
-            connection.Port = 143;
-            SecureMailConnectionDecorator sslMailConnection = new TlsMailConnectionDecorator();
-            sslMailConnection.MailConnection = connection;
-            sslMailConnection.Open();
-            MailClient client = emailFactory.CreateClient();
-            client.Authenticate(new MailUserInfo() { Email = "ozzytestmail@mail.ru", Password = securePass });
+            //MailProviderFactory emailFactory = new ImapProviderFactory();
+            //MailConnection connection = emailFactory.CreateConnection();
+            ////connection.Host = config.Imap.Host;
+            ////connection.IsSslAuthentication = config.Imap.IsSslAuthentication;
+            ////connection.Port = config.Imap.Port;
+            ////connection.SecureTypeConnection = new SslMailConnection();
+            //connection.Host = "imap.mail.ru";
+            //connection.IsSslAuthentication = true;
+            //connection.Port = 143;
+            //SecureMailConnectionDecorator sslMailConnection = new TlsMailConnectionDecorator();
+            //sslMailConnection.MailConnection = connection;
+            //sslMailConnection.Open();
+            //MailClient client = emailFactory.CreateClient();
+            //client.Authenticate(new MailUserInfo() { Email = "ozzytestmail@mail.ru", Password = securePass });
 
             //connection.Host = "imap.mail.ru";
             //connection.IsSslAuthentication = true;
@@ -108,70 +108,34 @@ namespace EmailClient.Tests
             //////command.Command = "FETCH " + 5343 + " (body[header.fields (from subject date)])";
             //////command.ExecuteCommand();
             //////LoggerHolders.ConsoleLogger.Log(command.Response, LogType.Debug);
-
-            StreamReader readerHeader = new StreamReader(@"D:\header.txt");
-
-            string header = readerHeader.ReadToEnd();
-            readerHeader.Close();
-            LoggerHolders.ConsoleLogger.Log(header, LogType.Debug);
-
-            IMailMessageBuilder builder = new ReceiveMailMessageBuilder(header);
-            MailMessageDirector director = new MailMessageDirector(builder);
-            director.ConstructMailMessage();
-            MailMessage messageHeader = builder.GetMailMessage();
-            LoggerHolders.ConsoleLogger.Log(string.Format("From: {0} <{1}>\n Subject: {2}\n Date: {3}\n{4}",
-                messageHeader.FromName, messageHeader.From, messageHeader.Subject, messageHeader.Date,
-                messageHeader.DateLocal));
-            ////StreamWriter streamWriter = new StreamWriter(@"C:\header.txt");
-            ////streamWriter.Write(command.Response);
-            ////streamWriter.Close();
-            ////////string pattern = @"\b(From: =\?(?<charset>[A-Za-z0-9-]+)\?(?<encoding>(B|Q))\?(?<base64Text>[A-Za-z0-9=]+)\?=) \<(?<email>[A-Za-z0-9@.]+)\>";
-            ////string forTest = "From: Mister Ozzy <emaui>";
-            ////string fromWithOutEncoding = @"From: (?<name>[A-Za-z0-9\s]+) \<(?<email>[A-Za-z0-9@.]+)\>";
-            ////string Date = @"Date: (?<date>[A-Za-z0-9,+:\s]+)";
-            ////string SubjectWithEncoding =
-            ////    @"Subject: =\?(?<charset>[A-Za-z0-9-]+)\?(?<encoding>(B|Q))\?(?<subject>[A-Za-z0-9=]+)\?=";
-            ////Regex regex = new Regex(SubjectWithEncoding);
-            ////////Console.WriteLine(pattern.Contains(@"From: =\?"));
-            ////// Получаем совпадения в экземпляре класса Match
-            ////////Match match = regex.Match(command.Response);
-            ////Match match = regex.Match(command.Response);
-            ////Console.WriteLine(match.Groups["charset"].Value);
-            ////////Console.WriteLine(match.Groups["charset"].Value);
-            ////Console.WriteLine(match.Groups["encoding"].Value);
-            ////////Console.WriteLine(match.Groups["email"].Value);
-            ////string fromStr = match.Groups["subject"].Value;
-            ////Console.WriteLine(fromStr);
-
-            //var decodedString = DecodedString("PSttdTSV2CL8KtyuTdicqhHuvhKW2MmW1446681346");
+            /// 
+            /// 
+            /// 
 
 
 
-            //LoggerHolders.ConsoleLogger.Log(decodedString, LogType.Debug);
 
-            //////command.Command = "FETCH " + 5343 + " body[text]";
-            //////command.ExecuteCommand();
-            //////////StreamWriter writer = new StreamWriter(@"C:\TestMes.txt");
-            //////////writer.Write(command.Response);
-            //////////writer.Close();
-            
-            //////LoggerHolders.ConsoleLogger.Log(command.Response, LogType.Debug);
-            //////TextWriter writer = new StreamWriter(@"C:\aaaa.txt");
-            //////writer.Write(command.Response);
-            //////writer.Close();
-            ////////LoggerHolders.ConsoleLogger.Log(command.Response, LogType.Debug);
+            //StreamReader readerHeader = new StreamReader(@"C:\header.txt");
 
-            //////LoggerHolders.ConsoleLogger.Log(DecodedString("IFBSSVZFRUVFRUVFRUVFRUVFRUVFRUVFRUVU"), LogType.Debug);
-            //////LoggerHolders.ConsoleLogger.Log(DecodedString("CjxIVE1MPjxCT0RZPlBSSVZFRUVFRUVFRUVFRUVFRUVFRUVFRUVUPC9CT0RZPjwvSFRNTD4K"), LogType.Debug);
+            //string header = readerHeader.ReadToEnd();
+            //readerHeader.Close();
+            //LoggerHolders.ConsoleLogger.Log(header, LogType.Debug);
 
+            //string pat =
+            //    @"From: =\?(?<charset>[A-Za-z0-9-]+)\?(?<encoding>(B|Q))\?(?<name>.*)\?=(?s:.)*\<(?<email>[A-Za-z0-9@.]+)\>";
 
-            //StreamWriter writer = new StreamWriter("C:\\new.txt");
-            //writer.WriteLine(command.Response);
-            //writer.Close();
+            //Regex regex = new Regex(pat);
+            //Match match = regex.Match(header);
 
-            //command.Command = "STATUS INBOX (messages)";
-            //command.ExecuteCommand();
-            //LoggerHolders.ConsoleLogger.Log(command.Response);
+            //Console.WriteLine(match.Groups["email"].Value);
+
+            //IMailMessageBuilder builder = new ReceiveMailMessageBuilder(header);
+            //MailMessageDirector director = new MailMessageDirector(builder);
+            //director.ConstructMailMessage();
+            //MailMessage messageHeader = builder.GetMailMessage();
+            //LoggerHolders.ConsoleLogger.Log(string.Format("From: {0} <{1}>\n Subject: {2}\n Date: {3}\n{4}",
+            //    messageHeader.FromName, messageHeader.From, messageHeader.Subject, messageHeader.Date,
+            //    messageHeader.DateLocal));
 
             Console.ReadLine();
         }
