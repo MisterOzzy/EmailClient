@@ -19,15 +19,37 @@ namespace EmailClient.Core.MailMessage.MailMessageParseUtil
             string changedPattern = isEncoded ? patternEncoding : patternWithOutEncoding;
             Regex regex = new Regex(changedPattern);
             Match match;
-            
+
             if (isEncoded)
             {
                 match = regex.Match(strForParsing);
                 string encoding = match.Groups[strEncoding].Value;
                 string charset = match.Groups[strCharset].Value;
                 string groupName = match.Groups[strGroupNameToDecode].Value;
-                return MailEncoding.GetMailEncoder(encoding).Decode(groupName, charset);
+
+                Regex regexEnc = new Regex(MailMessageRegExPattern.EncodedString);
+                MatchCollection matchCollection = regexEnc.Matches(groupName);
+                string encodedData = string.Empty;
+                IMailEncoder mailEncoder = MailEncoding.GetMailEncoder(encoding);
+                string decodedString = string.Empty;
+
+                foreach (Match m in matchCollection)
+                {
+                    encodedData += m.Groups["data"];
+                    if (encodedData.EndsWith("="))
+                    {
+                        string decodedPart = mailEncoder.Decode(encodedData, charset);
+                        decodedString += decodedPart;
+                        encodedData = string.Empty;
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(encodedData))
+                    decodedString += mailEncoder.Decode(encodedData, charset);
+
+                return decodedString;
             }
+
             match = regex.Match(strForParsing);
             return match.Groups[strGroupNameToDecode].Value;
         }
@@ -36,12 +58,33 @@ namespace EmailClient.Core.MailMessage.MailMessageParseUtil
             string strCharset = "charset",
             string strEncoding = "encoding")
         {
-            string groupName = match.Groups[strGroupNameToDecode].Value;
+            string matchedStr = match.Groups[strGroupNameToDecode].Value;
             if (!isEncoded)
-                return groupName;
+                return matchedStr;
+
             string encoding = match.Groups[strEncoding].Value;
             string charset = match.Groups[strCharset].Value;
-            return MailEncoding.GetMailEncoder(encoding).Decode(groupName, charset);
+            Regex regex = new Regex(MailMessageRegExPattern.EncodedString);
+            MatchCollection matchCollection = regex.Matches(matchedStr);
+            string encodedData = string.Empty;
+            IMailEncoder mailEncoder = MailEncoding.GetMailEncoder(encoding);
+            string decodedString = string.Empty;
+
+            foreach (Match m in matchCollection)
+            {
+                encodedData += m.Groups["data"];
+                if (encodedData.EndsWith("="))
+                {
+                    string decodedPart = mailEncoder.Decode(encodedData, charset);
+                    decodedString += decodedPart;
+                    encodedData = string.Empty;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(encodedData))
+                decodedString += mailEncoder.Decode(encodedData, charset);
+
+            return decodedString;
         }
 
         public static string Parse(string strForParsing, string patternFind, string strGroupName)

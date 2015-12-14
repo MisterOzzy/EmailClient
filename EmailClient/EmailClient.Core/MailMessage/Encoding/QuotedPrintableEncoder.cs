@@ -62,7 +62,7 @@ namespace EmailClient.Core.MailMessage.Encoding
                     i++;
                 }
             }
-            return System.Text.Encoding.GetEncoding(charset).GetString(output.ToArray());
+            return System.Text.Encoding.GetEncoding(charset).GetString(output.ToArray()).Replace("_", " ");
         }
     }
 }

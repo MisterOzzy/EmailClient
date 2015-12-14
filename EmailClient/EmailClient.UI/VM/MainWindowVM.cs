@@ -53,15 +53,25 @@ namespace EmailClient.UI.VM
             command.ExecuteCommand();
             LoggerHolders.ConsoleLogger.Log(command.Response);
 
-            for (int i = count; i > count - 300; i--)
+            for (int i = count; i > count - 2000; i--)
             {
                 command.Command = "FETCH " + i + " (body[header.fields (from subject date)])";
                 command.ExecuteCommand();
-                builde.AppendLine(command.Response);
-                builde.AppendLine(Environment.NewLine);
+                
                 IMailMessageBuilder builder = new ReceiveMailMessageBuilder(command.Response);
                 MailMessageDirector director = new MailMessageDirector(builder);
                 director.ConstructMailMessage();
+
+                if (string.IsNullOrWhiteSpace(builder.GetMailMessage().Subject))
+                {
+                    builde.AppendLine(command.Response);
+                    builde.AppendLine(Environment.NewLine);
+                }
+                else
+                {
+                    continue;
+                }
+
                 try
                 {
                     Application.Current.Dispatcher.InvokeAsync(() =>

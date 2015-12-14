@@ -25,29 +25,51 @@ namespace EmailClient.Tests
         
         static void Main(string[] args)
         {
-            //string result = "";
-            //string url = @"http://localhost:3627/EmailConfigurationService.svc/EmailProvider";
-            //EmailProvider config = null; 
+            string result = "";
+            string url = @"http://localhost:3627/EmailConfigurationService.svc/EmailProvider";
+            EmailProvider config = null; 
 
-            // Создаём объект WebClient
-            //using (var webClient = new WebClient())
-            //{
-            //    webClient.QueryString.Add("provider","gmail.com");
-            //    //Console.WriteLine(webClient.QueryString);
+             //Создаём объект WebClient
+            using (var webClient = new WebClient())
+            {
+                webClient.QueryString.Add("provider","gmail.com");
+                //Console.WriteLine(webClient.QueryString);
                 
-            //    // Выполняем запрос по адресу и получаем ответ в виде строки
-            //    var response = webClient.DownloadString(url);
-            //    config = JsonConvert.DeserializeObject<EmailProvider>(response);
-            //}
+                // Выполняем запрос по адресу и получаем ответ в виде строки
+                var response = webClient.DownloadString(url);
+                config = JsonConvert.DeserializeObject<EmailProvider>(response);
+            }
             //Get password
-            //StreamReader reader = new StreamReader("Test.txt");
-            ////reader.ReadLine();
-            ////char[] passChars = pass.ToCharArray();
+            StreamReader reader = new StreamReader("Test.txt");
 
-            //SecureString securePass = new SecureString();
-            ////reader.ReadLine().ToCharArray().ToList().ForEach(securePass.AppendChar);
+            SecureString securePass = new SecureString();
+            reader.ReadLine().ToCharArray().ToList().ForEach(securePass.AppendChar);
             //"Qwerty1234".ToCharArray().ToList().ForEach(securePass.AppendChar);
             //IntPtr cvttmpst = Marshal.SecureStringToBSTR(securePass);
+            MailProviderFactory emailFactory = new ImapProviderFactory();
+            MailConnection connection = emailFactory.CreateConnection();
+            connection.Host = config.Imap.Host;
+            connection.IsSslAuthentication = config.Imap.IsSslAuthentication;
+            connection.Port = config.Imap.Port;
+            ////connection.Open();
+            SslMailConnectionDecorator sslMailConnectionDecorator = new SslMailConnectionDecorator();
+            sslMailConnectionDecorator.MailConnection = connection;
+            sslMailConnectionDecorator.Open();
+            MailClient client = emailFactory.CreateClient();
+            //client.Authenticate(new MailUserInfo() { Email = "ozzy2106@gmail.com", Password = securePass });
+
+            
+
+            MailCommand command = client.Connection.CreateCommand();
+            command.Command = "AUTHENTICATE XOAUTH DQAAAA0BAACM5VezEB1fG75L4oTHjEnfHS-YuSLBUe_OKL9QFCcgxqP7SLkk_6AFgCqFdNWnId_ohkmTShCeb5rkgdZR5zceaMoIPDyCY4rWkyMjY8S-2vmkXSgHLUTmhZyZLPT3j7rAnEou-QEdHxjKpqiZ8a04QiOqvhIOWmN9JEWBxSYqdM5eIH8xG4pz19c6TWUhq1PJCYCyNsU384uNyFanJ-tg0z9c1dF1mgqLscbYZz82RKsZAPyu9Um2VrWWSW9r_56_OW7JJT709cte1jx0h29HEhF5J_4LZ1Md5bGHUFJQPS7-gJBLJApaVxWZfhpc_r19sNzaqdZYsIuUxRM65jiYXPomvozXSK4ASonS1cXu3g";
+            command.ExecuteCommand();
+            LoggerHolders.ConsoleLogger.Log(command.Response);
+            command.Command = "RETR 300";
+            command.ExecuteCommand(true);
+            LoggerHolders.ConsoleLogger.Log(command.Response);
+            StreamWriter writer = new StreamWriter(@"C:\fetch.log");
+            writer.Write(command.Response);
+            writer.Close();
 
 
 
@@ -119,23 +141,23 @@ namespace EmailClient.Tests
 
             //string header = readerHeader.ReadToEnd();
             //readerHeader.Close();
-            //LoggerHolders.ConsoleLogger.Log(header, LogType.Debug);
+            //LoggerHolders.ConsoleLogger.Log(header, LogType.Info);
 
-            //string pat =
-            //    @"From: =\?(?<charset>[A-Za-z0-9-]+)\?(?<encoding>(B|Q))\?(?<name>.*)\?=(?s:.)*\<(?<email>[A-Za-z0-9@.]+)\>";
+            ////string pat =
+            ////    @"Subject: (?<encodedName>(=\?[A-Za-z0-9-]+\?(B|Q|b|q)\?.+\?=[\s]*)+)";
 
-            //Regex regex = new Regex(pat);
-            //Match match = regex.Match(header);
+            ////Regex regex = new Regex(pat);
+            ////Match match = regex.Match(header);
 
-            //Console.WriteLine(match.Groups["email"].Value);
+            ////Console.WriteLine(match.Groups["encodedName"].Value);
 
             //IMailMessageBuilder builder = new ReceiveMailMessageBuilder(header);
             //MailMessageDirector director = new MailMessageDirector(builder);
             //director.ConstructMailMessage();
             //MailMessage messageHeader = builder.GetMailMessage();
-            //LoggerHolders.ConsoleLogger.Log(string.Format("From: {0} <{1}>\n Subject: {2}\n Date: {3}\n{4}",
+            //LoggerHolders.ConsoleLogger.Log(string.Format("From: {0} <{1}>\nSubject: {2}\nDate: {3}\n{4}",
             //    messageHeader.FromName, messageHeader.From, messageHeader.Subject, messageHeader.Date,
-            //    messageHeader.DateLocal));
+            //    messageHeader.DateLocal), LogType.Debug);
 
             Console.ReadLine();
         }
